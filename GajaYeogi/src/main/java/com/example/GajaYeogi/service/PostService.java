@@ -26,6 +26,7 @@ public class PostService {
         this.postRepository = postRepository;
     }
 
+    //게시글 작성
     public String postwrite(PostDto postDto){
         try{
             PostEntity postEntity = new PostEntity();
@@ -49,6 +50,7 @@ public class PostService {
         }
     }
 
+    //이미지 저장
     private List<PostImgEntity> saveImages(List<MultipartFile> images, PostEntity postEntity) {
         List<PostImgEntity> imageEntities = new ArrayList<>();
         try {

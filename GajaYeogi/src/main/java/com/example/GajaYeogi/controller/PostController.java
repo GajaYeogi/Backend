@@ -18,7 +18,7 @@ public class PostController {
         this.postService = postService;
     }
 
-    @GetMapping()
+    @GetMapping("/postwirte")
     public ResponseEntity<String> writepost(@ModelAttribute PostDto postDto){
         try{
             postService.postwrite(postDto);
