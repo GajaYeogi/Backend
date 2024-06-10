@@ -1,4 +1,4 @@
-package com.example.GajaYeogi.Service;
+package com.example.GajaYeogi.service;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;

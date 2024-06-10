@@ -1,6 +1,6 @@
-package com.example.GajaYeogi.Controller;
+package com.example.GajaYeogi.controller;
 
-import com.example.GajaYeogi.Service.TourService;
+import com.example.GajaYeogi.service.TourService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
