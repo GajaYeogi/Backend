@@ -17,7 +17,8 @@ public class PostController {
     public PostController(PostService postService){
         this.postService = postService;
     }
-
+    
+    //글 작성
     @GetMapping("/postwirte")
     public ResponseEntity<String> writepost(@ModelAttribute PostDto postDto){
         try{

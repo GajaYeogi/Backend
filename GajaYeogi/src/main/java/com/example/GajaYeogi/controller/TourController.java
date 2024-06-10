@@ -20,6 +20,7 @@ public class TourController {
         this.tourService = tourService;
     }
 
+    //투어 api 사용
     @GetMapping("/info")
     public ResponseEntity<String> getTourInfo() {
         logger.info("Received request for tour info");
