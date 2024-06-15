@@ -15,6 +15,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -48,6 +49,70 @@ public class PostService {
             e.printStackTrace();
             return "505 예기치 못한 오류입니다";
         }
+    }
+
+    public List<PostDto> getAllPost(){
+        List<PostDto> postlist = new ArrayList<>();
+
+        try{
+            List<PostEntity> postEnitites = postRepository.findAll();
+            for(PostEntity entity : postEnitites){
+                PostDto postDto = new PostDto();
+                postDto.setPostid(entity.getPostid());
+                postDto.setPostuser(entity.getPostuser());
+                postDto.setPostusername(entity.getPostusername());
+                postDto.setPosttitle(entity.getPosttitle());
+                postDto.setPostcontent(entity.getPostcontent());
+                postDto.setLocation(entity.getLocation());
+                postDto.setXpoint(entity.getXpoint());
+                postDto.setYpoint(entity.getYpoint());
+
+                List<String> postimgurls = new ArrayList<>();
+                for(int i = 0; i < entity.getPostimage().size(); i++){
+                    String postimgurl = entity.getPostimage().get(i).getPostimgpath();
+                    postimgurls.add(postimgurl);
+                }
+                postDto.setPostimgurl(postimgurls);
+
+                postlist.add(postDto);
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return postlist;
+    }
+
+    public PostDto getPost(PostDto postDto){
+        PostDto postlist = new PostDto();
+
+        try {
+            Long postid = postDto.getPostid();
+            Optional<PostEntity> postOptional = postRepository.findById(postid);
+
+            if (postOptional.isPresent()) {
+                PostEntity entity = postOptional.get();
+
+                postlist.setPostid(entity.getPostid());
+                postlist.setPostuser(entity.getPostuser());
+                postlist.setPostusername(entity.getPostusername());
+                postlist.setPosttitle(entity.getPosttitle());
+                postlist.setPostcontent(entity.getPostcontent());
+                postlist.setLocation(entity.getLocation());
+                postlist.setXpoint(entity.getXpoint());
+                postlist.setYpoint(entity.getYpoint());
+
+                List<String> postimgurls = new ArrayList<>();
+                for(int i = 0; i < entity.getPostimage().size(); i++){
+                    String postimgurl = entity.getPostimage().get(i).getPostimgpath();
+                    postimgurls.add(postimgurl);
+                }
+                postlist.setPostimgurl(postimgurls);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return postlist;
     }
 
     //이미지 저장
