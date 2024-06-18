@@ -72,6 +72,7 @@ public class PostController {
         }
     }
 
+    //게시글 수정
     @PutMapping("/postupdate")
     public ResponseEntity<String> postupdate(@ModelAttribute PostDto postDto){
         try{
@@ -83,6 +84,7 @@ public class PostController {
         }
     }
 
+    //게시글 삭제
     @DeleteMapping("/postdelete")
     public ResponseEntity<String> postdelete(@RequestParam(value = "postid")String postid,
                                              @RequestParam(value = "postuser")String postuser){
