@@ -13,10 +13,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class PostService {
@@ -38,6 +36,7 @@ public class PostService {
             postEntity.setLocation(postDto.getLocation());
             postEntity.setXpoint(postDto.getXpoint());
             postEntity.setYpoint(postDto.getYpoint());
+            postEntity.setSuggest(0L);
 
             List<PostImgEntity> imageEntities = saveImages(postDto.getPostimg(), postEntity);
             postEntity.setPostimage(imageEntities);
@@ -51,6 +50,7 @@ public class PostService {
         }
     }
 
+    //게시글 전부 조회
     public List<PostDto> getAllPost(){
         List<PostDto> postlist = new ArrayList<>();
 
@@ -58,7 +58,7 @@ public class PostService {
             List<PostEntity> postEnitites = postRepository.findAll();
             for(PostEntity entity : postEnitites){
                 PostDto postDto = new PostDto();
-                postDto.setPostid(entity.getPostid());
+                postDto.setPostid(String.valueOf(entity.getPostid()));
                 postDto.setPostuser(entity.getPostuser());
                 postDto.setPostusername(entity.getPostusername());
                 postDto.setPosttitle(entity.getPosttitle());
@@ -82,17 +82,18 @@ public class PostService {
         return postlist;
     }
 
+    //특정 게시글 조회
     public PostDto getPost(PostDto postDto){
         PostDto postlist = new PostDto();
 
         try {
-            Long postid = postDto.getPostid();
+            long postid = Long.parseLong(postDto.getPostid());
             Optional<PostEntity> postOptional = postRepository.findById(postid);
 
             if (postOptional.isPresent()) {
                 PostEntity entity = postOptional.get();
 
-                postlist.setPostid(entity.getPostid());
+                postlist.setPostid(String.valueOf(entity.getPostid()));
                 postlist.setPostuser(entity.getPostuser());
                 postlist.setPostusername(entity.getPostusername());
                 postlist.setPosttitle(entity.getPosttitle());
@@ -114,6 +115,102 @@ public class PostService {
 
         return postlist;
     }
+
+    //게시글 추천
+    public String suggestPost(PostDto postDto){
+        try{
+            Long postId = Long.valueOf(postDto.getPostid());
+            Optional<PostEntity> postOptional = postRepository.findById(postId);
+
+            if (postOptional.isPresent()) {
+                PostEntity postEntity = postOptional.get();
+
+                long suggest = postEntity.getSuggest();
+                suggest ++;
+
+                postEntity.setSuggest(suggest);
+
+                postRepository.save(postEntity);
+
+                return "게시글 추천 완료.";
+            }else{
+                return "해당하는 글이 존재하지 않습니다.";
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+            return "게시글 수정 실패";
+        }
+    }
+
+    //게시글 수정
+    public String updatePost(PostDto postDto){
+        try{
+            Long postId = Long.valueOf(postDto.getPostid());
+            List<MultipartFile> newImages = postDto.getPostimg();
+            List<String> oldImages = postDto.getPostoldimg();
+
+            Optional<PostEntity> postOptional = postRepository.findById(postId);
+
+            if (postOptional.isPresent()) {
+                PostEntity postEntity = postOptional.get();
+
+                if (!postEntity.getPostuser().equals(postDto.getPostuser())) {
+                    return "해당 글의 작성자가 아닙니다.";
+                }
+
+                postEntity.getPostimage().forEach(image -> image.setPostentity(null));
+                postEntity.getPostimage().clear();
+
+                if (oldImages != null && !oldImages.isEmpty()) {
+                    List<PostImgEntity> oldImageEntities = saveoldImages(oldImages, postEntity);
+                    postEntity.getPostimage().addAll(oldImageEntities);
+                }
+
+                List<PostImgEntity> newImageEntities = saveImages(newImages, postEntity);
+                postEntity.getPostimage().addAll(newImageEntities);
+
+                postEntity.setPosttitle(postDto.getPosttitle());
+                postEntity.setPostcontent(postDto.getPostcontent());
+                postEntity.setXpoint(postDto.getXpoint());
+                postEntity.setYpoint(postDto.getYpoint());
+
+                postRepository.save(postEntity);
+
+                return "게시글 수정완료";
+            }else{
+                return "해당하는 글이 존재하지 않습니다.";
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+            return "게시글 수정 실패";
+        }
+    }
+
+    //게시글 삭제
+    public String deletePost(PostDto postDto){
+        try{
+            Optional<PostEntity> postOptional = postRepository.findById(Long.valueOf(postDto.getPostid()));
+
+            if (postOptional.isPresent()) {
+                PostEntity postEntity = postOptional.get();
+
+                if (!postEntity.getPostuser().equals(postDto.getPostuser())) {
+                    return "해당 게시글의 작성자가 아닙니다. 삭제할 수 없습니다.";
+                }
+
+                postRepository.deleteById(Long.valueOf(postDto.getPostid()));
+            } else {
+                return "해당하는 게시글이 존재하지 않습니다.";
+            }
+
+            return "게시글 삭제 완료!";
+        }catch (Exception e){
+            e.printStackTrace();
+            return "게시글 삭제 실패";
+        }
+    }
+
+
 
     //이미지 저장
     private List<PostImgEntity> saveImages(List<MultipartFile> images, PostEntity postEntity) {
@@ -144,5 +241,22 @@ public class PostService {
             e.printStackTrace();
         }
         return imageEntities;
+    }
+
+    private List<PostImgEntity> saveoldImages(List<String> oldImageNames, PostEntity postEntity) {
+        try {
+            return oldImageNames.stream()
+                    .map(imageName -> {
+                        PostImgEntity postImgEntity = new PostImgEntity();
+                        postImgEntity.setPostimgpath(imageName);
+                        postImgEntity.setPostentity(postEntity);
+                        return postImgEntity;
+                    })
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            // 예외 발생 시 로깅
+            System.err.println("Error while creating AuctionImageEntity: " + e.getMessage());
+            return Collections.emptyList();
+        }
     }
 }

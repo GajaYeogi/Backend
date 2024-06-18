@@ -5,10 +5,7 @@ import com.example.GajaYeogi.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,8 +22,8 @@ public class PostController {
     @GetMapping("/postwirte")
     public ResponseEntity<String> writepost(@ModelAttribute PostDto postDto){
         try{
-            postService.postwrite(postDto);
-            return ResponseEntity.ok("글 작성 완료!");
+            String postresponse = postService.postwrite(postDto);
+            return ResponseEntity.ok(postresponse);
         }catch(Exception e){
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("505 예기치 못한 오류입니다");
@@ -50,13 +47,55 @@ public class PostController {
     public ResponseEntity<PostDto> postread(@RequestParam(value = "postid") String postid){
         try{
             PostDto postDto = new PostDto();
-            postDto.setPostid(Long.valueOf(postid));
+            postDto.setPostid(postid);
 
             PostDto postlist = postService.getPost(postDto);
             return ResponseEntity.ok(postlist);
         }catch(Exception e){
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    //게시글 추천
+    @GetMapping("/postsuggest")
+    public ResponseEntity<String> postsuggest(@RequestParam(value = "postid") String postid){
+        try{
+            PostDto postDto = new PostDto();
+            postDto.setPostid(postid);
+
+            String postresponse = postService.suggestPost(postDto);
+            return ResponseEntity.ok(postresponse);
+        }catch(Exception e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @PutMapping("/postupdate")
+    public ResponseEntity<String> postupdate(@ModelAttribute PostDto postDto){
+        try{
+            String postresponse = postService.updatePost(postDto);
+            return ResponseEntity.ok(postresponse);
+        }catch(Exception e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("505 예기치 못한 오류입니다");
+        }
+    }
+
+    @DeleteMapping("/postdelete")
+    public ResponseEntity<String> postdelete(@RequestParam(value = "postid")String postid,
+                                             @RequestParam(value = "postuser")String postuser){
+        try{
+            PostDto postDto = new PostDto();
+            postDto.setPostid(postid);
+            postDto.setPostuser(postuser);
+
+            String postresponse = postService.deletePost(postDto);
+            return ResponseEntity.ok(postresponse);
+        }catch(Exception e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("505 예기치 못한 오류입니다");
         }
     }
 }
