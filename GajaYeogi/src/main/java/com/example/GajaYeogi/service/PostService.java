@@ -1,9 +1,8 @@
 package com.example.GajaYeogi.service;
 
 import com.example.GajaYeogi.dto.PostDto;
-import com.example.GajaYeogi.entity.PostEntity;
-import com.example.GajaYeogi.entity.PostImgEntity;
-import com.example.GajaYeogi.repository.PostRepository;
+import com.example.GajaYeogi.entity.*;
+import com.example.GajaYeogi.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,10 +18,16 @@ import java.util.stream.Collectors;
 @Service
 public class PostService {
     private final PostRepository postRepository;
+    private final UserRepository userRepository;
+    private final ScrapRepository scrapRepository;
+    private final WriteidRepository writeidRepository;
 
     @Autowired
-    public PostService(PostRepository postRepository){
+    public PostService(PostRepository postRepository, ScrapRepository scrapRepository, WriteidRepository writeidRepository, UserRepository userRepository){
         this.postRepository = postRepository;
+        this.userRepository = userRepository;
+        this.scrapRepository = scrapRepository;
+        this.writeidRepository = writeidRepository;
     }
 
     //게시글 작성
@@ -42,6 +47,24 @@ public class PostService {
             postEntity.setPostimage(imageEntities);
 
             postRepository.save(postEntity);
+
+            Optional<UserEntity> userOptional = userRepository.findByUser(postDto.getPostuser());
+
+            if (userOptional.isPresent()) {
+                Optional<WriteidEntity> writeidOptional = writeidRepository.findByWriteid(String.valueOf(postEntity.getPostid()));
+                if (writeidOptional.isPresent()) {
+                    return ("이미 작성중이 완료된 게시물입니다.");
+                } else {
+                    UserEntity newuser = userOptional.get();
+                    WriteidEntity writeid = new WriteidEntity();
+                    writeid.setWriteid(String.valueOf(postEntity.getPostid()));
+                    writeid.setUserentity(newuser);
+
+                    writeidRepository.save(writeid);
+                }
+            }else{
+                return("유저가 존재하지 않습니다.");
+            }
 
             return "글 작성 성공!";
         }catch(Exception e){
@@ -123,6 +146,24 @@ public class PostService {
             Optional<PostEntity> postOptional = postRepository.findById(postId);
 
             if (postOptional.isPresent()) {
+                Optional<UserEntity> userOptional = userRepository.findByUser(postDto.getPostuser());
+
+                if (userOptional.isPresent()) {
+                    Optional<ScrapEntity> scrapOptional = scrapRepository.findByScrapid(String.valueOf(postId));
+                    if(scrapOptional.isPresent()){
+                        return("이미 추천을 하셨습니다.");
+                    }else{
+                        UserEntity newuser = userOptional.get();
+                        ScrapEntity newScrap = new ScrapEntity();
+                        newScrap.setScrapid(String.valueOf(postId));
+                        newScrap.setUserentity(newuser);
+
+                        scrapRepository.save(newScrap);
+                    }
+                }else{
+                    return("유저가 존재하지 않습니다!");
+                }
+
                 PostEntity postEntity = postOptional.get();
 
                 long suggest = postEntity.getSuggest();
@@ -138,7 +179,52 @@ public class PostService {
             }
         }catch(Exception e){
             e.printStackTrace();
-            return "게시글 수정 실패";
+            return "게시글 추천 실패";
+        }
+    }
+
+    //게시글 추천 취소
+    public String unsuggestPost(PostDto postDto){
+        try{
+            Long postId = Long.valueOf(postDto.getPostid());
+            Optional<PostEntity> postOptional = postRepository.findById(postId);
+            if (postOptional.isPresent()) {
+                Optional<UserEntity> userOptional = userRepository.findByUser(postDto.getPostuser());
+
+                if (userOptional.isPresent()) {
+                    Optional<ScrapEntity> scrapOptional = scrapRepository.findByScrapid(String.valueOf(postId));
+
+                    if(scrapOptional.isPresent()){
+                        UserEntity userEntity = userOptional.get();
+
+                        ScrapEntity scrapToRemove = scrapOptional.get();
+                        userEntity.getScraps().remove(scrapToRemove);
+
+                        userRepository.save(userEntity);
+                    } else {
+                        return "추천 정보가 없습니다!";
+                    }
+
+                } else {
+                    return "유저가 존재하지 않습니다!";
+                }
+            }else{
+                return "해당글이 존재하지 않습니다.";
+            }
+
+            PostEntity postEntity = postOptional.get();
+
+            long suggest = postEntity.getSuggest();
+            suggest --;
+
+            postEntity.setSuggest(suggest);
+
+            postRepository.save(postEntity);
+
+            return "게시글 추천 취소 완료.";
+        }catch(Exception e){
+            e.printStackTrace();
+            return "게시글 추천 취소 실패";
         }
     }
 
@@ -189,7 +275,9 @@ public class PostService {
     //게시글 삭제
     public String deletePost(PostDto postDto){
         try{
+            Optional<UserEntity> alluserOptional = userRepository.findUserWithNonEmptyScraps();
             Optional<PostEntity> postOptional = postRepository.findById(Long.valueOf(postDto.getPostid()));
+            Optional<ScrapEntity> scrapOptional = scrapRepository.findByScrapid(String.valueOf(postDto.getPostid()));
 
             if (postOptional.isPresent()) {
                 PostEntity postEntity = postOptional.get();
@@ -198,8 +286,34 @@ public class PostService {
                     return "해당 게시글의 작성자가 아닙니다. 삭제할 수 없습니다.";
                 }
 
+                if (scrapOptional.isPresent()) {
+                    UserEntity userEntity = alluserOptional.get();
+
+                    ScrapEntity scrapToRemove = scrapOptional.get();
+                    userEntity.getScraps().remove(scrapToRemove);
+
+                    userRepository.save(userEntity);
+                }
+
                 postRepository.deleteById(Long.valueOf(postDto.getPostid()));
-            } else {
+
+                Optional<UserEntity> userOptional = userRepository.findByUser(postDto.getPostuser());
+
+                if (userOptional.isPresent()) {
+                    Optional<WriteidEntity> writeidOptional = writeidRepository.findByWriteid(String.valueOf(postDto.getPostid()));
+
+                    if (writeidOptional.isPresent()) {
+                        UserEntity userEntity = userOptional.get();
+
+                        WriteidEntity writeidToRemove = writeidOptional.get();
+                        userEntity.getWriteid().remove(writeidToRemove);
+
+                        userRepository.save(userEntity);
+                    }
+                } else {
+                    return "해당하는 유저가 존재하지 않습니다.";
+                }
+            }else {
                 return "해당하는 게시글이 존재하지 않습니다.";
             }
 

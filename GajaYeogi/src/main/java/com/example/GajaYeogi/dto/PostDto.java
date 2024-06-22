@@ -18,5 +18,5 @@ public class PostDto {
     private List<MultipartFile> postimg;            //이미지
     private List<String> postoldimg;                //원래 있었던 이미지
     private List<String> postimgurl;                //이미지 경로를 반환하기 위한 변수
-    private Long suggest;                         //추천
+    private Long suggest;                           //추천
 }

@@ -59,12 +59,31 @@ public class PostController {
 
     //게시글 추천
     @GetMapping("/postsuggest")
-    public ResponseEntity<String> postsuggest(@RequestParam(value = "postid") String postid){
+    public ResponseEntity<String> postsuggest(@RequestParam(value = "postid") String postid,
+                                              @RequestParam(value = "postuser") String postuser){
         try{
             PostDto postDto = new PostDto();
             postDto.setPostid(postid);
+            postDto.setPostuser(postuser);
 
             String postresponse = postService.suggestPost(postDto);
+            return ResponseEntity.ok(postresponse);
+        }catch(Exception e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    //게시글 추천 취소
+    @GetMapping("/unpostsuggest")
+    public ResponseEntity<String> unpostsuggest(@RequestParam(value = "postid") String postid,
+                                                @RequestParam(value = "postuser") String postuser){
+        try{
+            PostDto postDto = new PostDto();
+            postDto.setPostid(postid);
+            postDto.setPostuser(postuser);
+
+            String postresponse = postService.unsuggestPost(postDto);
             return ResponseEntity.ok(postresponse);
         }catch(Exception e){
             e.printStackTrace();
