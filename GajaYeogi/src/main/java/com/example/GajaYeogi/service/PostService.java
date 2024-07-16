@@ -257,6 +257,7 @@ public class PostService {
 
                 postEntity.setPosttitle(postDto.getPosttitle());
                 postEntity.setPostcontent(postDto.getPostcontent());
+                postEntity.setLocation(postDto.getLocation());
                 postEntity.setXpoint(postDto.getXpoint());
                 postEntity.setYpoint(postDto.getYpoint());
 
@@ -357,6 +358,7 @@ public class PostService {
         return imageEntities;
     }
 
+    //오래된 이미지 저장
     private List<PostImgEntity> saveoldImages(List<String> oldImageNames, PostEntity postEntity) {
         try {
             return oldImageNames.stream()

@@ -1,11 +1,13 @@
 package com.example.GajaYeogi.controller;
 
 import com.example.GajaYeogi.dto.PostDto;
+import com.example.GajaYeogi.entity.PostEntity;
 import com.example.GajaYeogi.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -18,7 +20,7 @@ public class PostController {
         this.postService = postService;
     }
     
-    //글 작성
+    //글 작성 postuser, postusername, posttitle, postcontent, postimg, location, xpoint, ypoint
     @GetMapping("/postwirte")
     public ResponseEntity<String> writepost(@ModelAttribute PostDto postDto){
         try{
@@ -91,7 +93,8 @@ public class PostController {
         }
     }
 
-    //게시글 수정
+    //게시글 수정 postid, postimg, postoldimg, posttitle, postcontent, location, xpoint, ypoint
+
     @PutMapping("/postupdate")
     public ResponseEntity<String> postupdate(@ModelAttribute PostDto postDto){
         try{
