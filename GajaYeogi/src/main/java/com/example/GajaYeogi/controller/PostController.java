@@ -20,7 +20,7 @@ public class PostController {
         this.postService = postService;
     }
     
-    //글 작성 postuser, postusername, posttitle, postcontent, postimg, location, xpoint, ypoint
+    //글 작성 postuser, postusername, posttitle, postcontent, postimg, postlocation, xpoint, ypoint
     @GetMapping("/postwirte")
     public ResponseEntity<String> writepost(@ModelAttribute PostDto postDto){
         try{
@@ -93,7 +93,7 @@ public class PostController {
         }
     }
 
-    //게시글 수정 postid, postimg, postoldimg, posttitle, postcontent, location, xpoint, ypoint
+    //게시글 수정 postid, postimg, postoldimg, posttitle, postcontent, postlocation, xpoint, ypoint
 
     @PutMapping("/postupdate")
     public ResponseEntity<String> postupdate(@ModelAttribute PostDto postDto){

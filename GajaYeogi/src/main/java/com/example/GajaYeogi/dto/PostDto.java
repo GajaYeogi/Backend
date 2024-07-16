@@ -12,7 +12,7 @@ public class PostDto {
     private String postcontent;                     //게시글 본문
     private String postuser;                        //게시글 작성자 이메일
     private String postusername;                    //게시글 작성자 닉네임
-    private String location;                        //작성하고 싶은 게시글의 지역
+    private String postlocation;                        //작성하고 싶은 게시글의 지역
     private String xpoint;                          //x좌표
     private String ypoint;                          //y좌표
     private List<MultipartFile> postimg;            //이미지

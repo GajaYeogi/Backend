@@ -38,7 +38,7 @@ public class PostService {
             postEntity.setPostusername(postDto.getPostusername());
             postEntity.setPosttitle(postDto.getPosttitle());
             postEntity.setPostcontent(postDto.getPostcontent());
-            postEntity.setLocation(postDto.getLocation());
+            postEntity.setPostlocation(postDto.getPostlocation());
             postEntity.setXpoint(postDto.getXpoint());
             postEntity.setYpoint(postDto.getYpoint());
             postEntity.setSuggest(0L);
@@ -86,7 +86,7 @@ public class PostService {
                 postDto.setPostusername(entity.getPostusername());
                 postDto.setPosttitle(entity.getPosttitle());
                 postDto.setPostcontent(entity.getPostcontent());
-                postDto.setLocation(entity.getLocation());
+                postDto.setPostlocation(entity.getPostlocation());
                 postDto.setXpoint(entity.getXpoint());
                 postDto.setYpoint(entity.getYpoint());
 
@@ -121,7 +121,7 @@ public class PostService {
                 postlist.setPostusername(entity.getPostusername());
                 postlist.setPosttitle(entity.getPosttitle());
                 postlist.setPostcontent(entity.getPostcontent());
-                postlist.setLocation(entity.getLocation());
+                postlist.setPostlocation(entity.getPostlocation());
                 postlist.setXpoint(entity.getXpoint());
                 postlist.setYpoint(entity.getYpoint());
 
@@ -257,7 +257,7 @@ public class PostService {
 
                 postEntity.setPosttitle(postDto.getPosttitle());
                 postEntity.setPostcontent(postDto.getPostcontent());
-                postEntity.setLocation(postDto.getLocation());
+                postEntity.setPostlocation(postDto.getPostlocation());
                 postEntity.setXpoint(postDto.getXpoint());
                 postEntity.setYpoint(postDto.getYpoint());
 

@@ -29,8 +29,8 @@ public class PostEntity {
     @Column(name = "posttime")                      // 게시글 작성 시간
     private String posttime;
 
-    @Column(name = "location")
-    private String location;                        // 게시글의 지역
+    @Column(name = "postlocation")
+    private String postlocation;                        // 게시글의 지역
 
     @Column(name = "xpoint")
     private String xpoint;                          // x좌표
