@@ -39,8 +39,8 @@ public class PostService {
             postEntity.setPosttitle(postDto.getPosttitle());
             postEntity.setPostcontent(postDto.getPostcontent());
             postEntity.setPostlocation(postDto.getPostlocation());
-            postEntity.setXpoint(postDto.getXpoint());
-            postEntity.setYpoint(postDto.getYpoint());
+            postEntity.setPostxpoint(postDto.getPostxpoint());
+            postEntity.setPostypoint(postDto.getPostypoint());
             postEntity.setSuggest(0L);
 
             List<PostImgEntity> imageEntities = saveImages(postDto.getPostimg(), postEntity);
@@ -87,8 +87,8 @@ public class PostService {
                 postDto.setPosttitle(entity.getPosttitle());
                 postDto.setPostcontent(entity.getPostcontent());
                 postDto.setPostlocation(entity.getPostlocation());
-                postDto.setXpoint(entity.getXpoint());
-                postDto.setYpoint(entity.getYpoint());
+                postDto.setPostxpoint(entity.getPostxpoint());
+                postDto.setPostypoint(entity.getPostypoint());
 
                 List<String> postimgurls = new ArrayList<>();
                 for(int i = 0; i < entity.getPostimage().size(); i++){
@@ -122,8 +122,8 @@ public class PostService {
                 postlist.setPosttitle(entity.getPosttitle());
                 postlist.setPostcontent(entity.getPostcontent());
                 postlist.setPostlocation(entity.getPostlocation());
-                postlist.setXpoint(entity.getXpoint());
-                postlist.setYpoint(entity.getYpoint());
+                postlist.setPostxpoint(entity.getPostxpoint());
+                postlist.setPostypoint(entity.getPostypoint());
 
                 List<String> postimgurls = new ArrayList<>();
                 for(int i = 0; i < entity.getPostimage().size(); i++){
@@ -258,8 +258,8 @@ public class PostService {
                 postEntity.setPosttitle(postDto.getPosttitle());
                 postEntity.setPostcontent(postDto.getPostcontent());
                 postEntity.setPostlocation(postDto.getPostlocation());
-                postEntity.setXpoint(postDto.getXpoint());
-                postEntity.setYpoint(postDto.getYpoint());
+                postEntity.setPostxpoint(postDto.getPostxpoint());
+                postEntity.setPostypoint(postDto.getPostypoint());
 
                 postRepository.save(postEntity);
 

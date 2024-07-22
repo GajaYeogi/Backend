@@ -33,10 +33,10 @@ public class PostEntity {
     private String postlocation;                        // 게시글의 지역
 
     @Column(name = "xpoint")
-    private String xpoint;                          // x좌표
+    private String postxpoint;                          // x좌표
 
     @Column(name = "ypoint")
-    private String ypoint;                          // y좌표
+    private String postypoint;                          // y좌표
 
     @Column(name = "suggest")
     private Long suggest;                           //추천
