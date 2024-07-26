@@ -1,6 +1,7 @@
 package com.example.GajaYeogi.controller;
 
 import com.example.GajaYeogi.dto.ReviewDto;
+import com.example.GajaYeogi.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ public class ReviewController {
     @GetMapping("/reviewwirte")
     public ResponseEntity<String> writereview(@ModelAttribute ReviewDto reviewDto){
         try{
-            String reviewresponse = reviewService.reviewwrite(reviewDto);
+            String reviewresponse = reviewService.Reviewwrite(reviewDto);
             return ResponseEntity.ok(reviewresponse);
         }catch(Exception e){
             e.printStackTrace();
@@ -32,7 +33,7 @@ public class ReviewController {
     @GetMapping("/reviewallread")
     public ResponseEntity<List<ReviewDto>> reviewallread(){
         try{
-            List<ReviewDto> reviewlist = reviewService.getAllreview();
+            List<ReviewDto> reviewlist = reviewService.getAllReview();
             return ResponseEntity.ok(reviewlist);
         }catch(Exception e){
             e.printStackTrace();
@@ -76,7 +77,7 @@ public class ReviewController {
             reviewDto.setReviewid(reviewid);
             reviewDto.setReviewuser(reviewuser);
 
-            String reviewresponse = reviewService.deletereview(reviewDto);
+            String reviewresponse = reviewService.deleteReview(reviewDto);
             return ResponseEntity.ok(reviewresponse);
         }catch(Exception e){
             e.printStackTrace();

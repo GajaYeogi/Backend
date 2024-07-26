@@ -89,6 +89,7 @@ public class PostService {
                 postDto.setPostlocation(entity.getPostlocation());
                 postDto.setPostxpoint(entity.getPostxpoint());
                 postDto.setPostypoint(entity.getPostypoint());
+                postDto.setSuggest(entity.getSuggest());
 
                 List<String> postimgurls = new ArrayList<>();
                 for(int i = 0; i < entity.getPostimage().size(); i++){
@@ -124,6 +125,7 @@ public class PostService {
                 postlist.setPostlocation(entity.getPostlocation());
                 postlist.setPostxpoint(entity.getPostxpoint());
                 postlist.setPostypoint(entity.getPostypoint());
+                postlist.setSuggest(entity.getSuggest());
 
                 List<String> postimgurls = new ArrayList<>();
                 for(int i = 0; i < entity.getPostimage().size(); i++){
