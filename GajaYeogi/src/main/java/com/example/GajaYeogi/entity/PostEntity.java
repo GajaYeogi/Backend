@@ -39,7 +39,7 @@ public class PostEntity {
     private String postypoint;                          // y좌표
 
     @Column(name = "suggest")
-    private Long suggest;                           //추천
+    private Long suggest;                               //추천
 
     @OneToMany(mappedBy = "postentity", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PostImgEntity> postimage;

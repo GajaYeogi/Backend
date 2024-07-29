@@ -41,6 +41,7 @@ public class PostService {
             postEntity.setPostlocation(postDto.getPostlocation());
             postEntity.setPostxpoint(postDto.getPostxpoint());
             postEntity.setPostypoint(postDto.getPostypoint());
+            postEntity.setPostcategory(postDto.getPostcategory());
             postEntity.setSuggest(0L);
 
             List<PostImgEntity> imageEntities = saveImages(postDto.getPostimg(), postEntity);
@@ -89,6 +90,7 @@ public class PostService {
                 postDto.setPostlocation(entity.getPostlocation());
                 postDto.setPostxpoint(entity.getPostxpoint());
                 postDto.setPostypoint(entity.getPostypoint());
+                postDto.setPostcategory(entity.getPostcategory());
                 postDto.setSuggest(entity.getSuggest());
 
                 List<String> postimgurls = new ArrayList<>();
@@ -125,6 +127,7 @@ public class PostService {
                 postlist.setPostlocation(entity.getPostlocation());
                 postlist.setPostxpoint(entity.getPostxpoint());
                 postlist.setPostypoint(entity.getPostypoint());
+                postlist.setPostcategory(entity.getPostcategory());
                 postlist.setSuggest(entity.getSuggest());
 
                 List<String> postimgurls = new ArrayList<>();
@@ -262,6 +265,7 @@ public class PostService {
                 postEntity.setPostlocation(postDto.getPostlocation());
                 postEntity.setPostxpoint(postDto.getPostxpoint());
                 postEntity.setPostypoint(postDto.getPostypoint());
+                postEntity.setPostcategory(postDto.getPostcategory());
 
                 postRepository.save(postEntity);
 
