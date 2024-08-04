@@ -1,5 +1,6 @@
 package com.example.GajaYeogi.controller;
 
+import com.example.GajaYeogi.dto.PostDto;
 import com.example.GajaYeogi.dto.ReviewDto;
 import com.example.GajaYeogi.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ public class ReviewController {
     }
 
     //글 작성 reviewuser, reviewusername, reviewtitle, reviewcontent, reviewimg, reviewlocation, xpoint, ypoint
-    @GetMapping("/reviewwirte")
+    @PostMapping("/reviewwirte")
     public ResponseEntity<String> writereview(@ModelAttribute ReviewDto reviewDto){
         try{
             String reviewresponse = reviewService.Reviewwrite(reviewDto);
@@ -30,7 +31,7 @@ public class ReviewController {
     }
 
     //모든 글 조회
-    @GetMapping("/reviewallread")
+    @PostMapping("/reviewallread")
     public ResponseEntity<List<ReviewDto>> reviewallread(){
         try{
             List<ReviewDto> reviewlist = reviewService.getAllReview();
@@ -42,7 +43,7 @@ public class ReviewController {
     }
 
     //특정 글 조회
-    @GetMapping("/reviewread")
+    @PostMapping("/reviewread")
     public ResponseEntity<ReviewDto> reviewread(@RequestParam(value = "reviewid") String reviewid){
         try{
             ReviewDto reviewDto = new ReviewDto();
@@ -50,6 +51,38 @@ public class ReviewController {
 
             ReviewDto reviewlist = reviewService.getReview(reviewDto);
             return ResponseEntity.ok(reviewlist);
+        }catch(Exception e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @GetMapping("/visitcount")
+    public ResponseEntity<String> visitcount(@RequestParam(value = "reviewid") String reviewid,
+                                            @RequestParam(value = "reviewuser") String reviewuser){
+        try{
+            ReviewDto reviewDto = new ReviewDto();
+            reviewDto.setReviewid(reviewid);
+            reviewDto.setReviewuser(reviewuser);
+
+            String reviewresponse = reviewService.visitcount(reviewDto);
+            return ResponseEntity.ok(reviewresponse);
+        }catch(Exception e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @GetMapping("/visituncount")
+    public ResponseEntity<String> visituncount(@RequestParam(value = "reviewid") String reviewid,
+                                            @RequestParam(value = "reviewuser") String reviewuser){
+        try{
+            ReviewDto reviewDto = new ReviewDto();
+            reviewDto.setReviewid(reviewid);
+            reviewDto.setReviewuser(reviewuser);
+
+            String reviewresponse = reviewService.visituncount(reviewDto);
+            return ResponseEntity.ok(reviewresponse);
         }catch(Exception e){
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);

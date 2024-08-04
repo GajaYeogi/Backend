@@ -1,5 +1,6 @@
 package com.example.GajaYeogi.service;
 
+import com.example.GajaYeogi.dto.PostDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.core.ParameterizedTypeReference;
@@ -24,19 +25,19 @@ public class TourService {
         this.restTemplate = restTemplateBuilder.build();
     }
 
-    public String getTourInfo() {
+    public String getTourInfo(PostDto postDto) {
         String urlRoot = "http://apis.data.go.kr/B551011/KorService1/locationBasedList1";
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(urlRoot)
                 .queryParam("serviceKey", apiKey)
                 .queryParam("pageNo", 1)
-                .queryParam("numOfRows", 10)
+                .queryParam("numOfRows", 100)
                 .queryParam("MobileOS", "ETC")
                 .queryParam("MobileApp", "AppTest")
                 .queryParam("_type", "json")
-                .queryParam("mapX", 126.981611)
-                .queryParam("mapY", 37.568477)
-                .queryParam("radius", 1000)
-                .queryParam("contentTypeId", 25);
+                .queryParam("mapX", postDto.getPostxpoint())
+                .queryParam("mapY", postDto.getPostypoint())
+                .queryParam("radius", 1000);
+                //.queryParam("contentTypeId", 25);
 
         URI uri;
         try {

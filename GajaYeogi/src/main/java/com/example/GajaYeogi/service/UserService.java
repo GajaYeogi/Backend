@@ -68,6 +68,11 @@ public class UserService {
                         .map(WriteidEntity::getWriteid)
                         .collect(Collectors.toList());
                 userdtos.setWriteids(writeids);
+
+                List<String> visitids = userEntity.getVisitid().stream()
+                        .map(VisitidEntity::getVisitid)
+                        .collect(Collectors.toList());
+                userdtos.setWriteids(visitids);
             }
         }catch(Exception e){
             e.printStackTrace();

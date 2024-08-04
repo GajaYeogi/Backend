@@ -1,5 +1,6 @@
 package com.example.GajaYeogi.service;
 
+import com.example.GajaYeogi.dto.PostDto;
 import com.example.GajaYeogi.dto.ReviewDto;
 import com.example.GajaYeogi.entity.*;
 import com.example.GajaYeogi.repository.*;
@@ -21,13 +22,16 @@ public class ReviewService {
     private final UserRepository userRepository;
     private final ScrapRepository scrapRepository;
     private final WriteidRepository writeidRepository;
+    private final VisitidRepository visitidRepository;
 
     @Autowired
-    public ReviewService(ReviewRepository reviewRepository, ScrapRepository scrapRepository, WriteidRepository writeidRepository, UserRepository userRepository){
+    public ReviewService(ReviewRepository reviewRepository, ScrapRepository scrapRepository, WriteidRepository writeidRepository,
+                         UserRepository userRepository, VisitidRepository visitidRepository){
         this.reviewRepository = reviewRepository;
         this.userRepository = userRepository;
         this.scrapRepository = scrapRepository;
         this.writeidRepository = writeidRepository;
+        this.visitidRepository = visitidRepository;
     }
 
     //게시글 작성
@@ -41,6 +45,7 @@ public class ReviewService {
             reviewEntity.setReviewlocation(reviewDto.getReviewlocation());
             reviewEntity.setReviewxpoint(reviewDto.getReviewxpoint());
             reviewEntity.setReviewypoint(reviewDto.getReviewypoint());
+            reviewEntity.setVisitcount(0L);
 
             List<ReviewImgEntity> imageEntities = saveImages(reviewDto.getReviewimg(), reviewEntity);
             reviewEntity.setReviewimage(imageEntities);
@@ -180,6 +185,95 @@ public class ReviewService {
         }catch(Exception e){
             e.printStackTrace();
             return "게시글 수정 실패";
+        }
+    }
+
+    //방문자수 카운팅
+    public String visitcount(ReviewDto reviewDto){
+        try{
+            Long reviewId = Long.valueOf(reviewDto.getReviewid());
+            Optional<ReviewEntity> reviewOptional = reviewRepository.findById(reviewId);
+
+            if (reviewOptional.isPresent()) {
+                Optional<UserEntity> userOptional = userRepository.findByUser(reviewDto.getReviewuser());
+
+                if (userOptional.isPresent()) {
+                    Optional<VisitidEntity> visitidOptional = visitidRepository.findByVisitid(String.valueOf(reviewId));
+                    if(visitidOptional.isPresent()){
+                        return("이미 방문등록을 하셨습니다.");
+                    }else{
+                        UserEntity newuser = userOptional.get();
+                        VisitidEntity newvisitid = new VisitidEntity();
+                        newvisitid.setVisitid(String.valueOf(reviewId));
+                        newvisitid.setUserentity(newuser);
+
+                        visitidRepository.save(newvisitid);
+                    }
+                }else{
+                    return("유저가 존재하지 않습니다!");
+                }
+
+                ReviewEntity reviewEntity = reviewOptional.get();
+
+                long visitcount = reviewEntity.getVisitcount();
+                visitcount ++;
+
+                reviewEntity.setVisitcount(visitcount);
+
+                reviewRepository.save(reviewEntity);
+
+                return "방문지 등록 완료.";
+            }else{
+                return "해당하는 글이 존재하지 않습니다.";
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+            return "방문지 등록 실패";
+        }
+    }
+
+    //방문자수 언카운팅
+    public String visituncount(ReviewDto reviewDto){
+        try{
+            Long reviewId = Long.valueOf(reviewDto.getReviewid());
+            Optional<ReviewEntity> reviewOptional = reviewRepository.findById(reviewId);
+            if (reviewOptional.isPresent()) {
+                Optional<UserEntity> userOptional = userRepository.findByUser(reviewDto.getReviewuser());
+
+                if (userOptional.isPresent()) {
+                    Optional<VisitidEntity> visitidOptional = visitidRepository.findByVisitid(String.valueOf(reviewId));
+
+                    if(visitidOptional.isPresent()){
+                        UserEntity userEntity = userOptional.get();
+
+                        VisitidEntity visitidToRemove = visitidOptional.get();
+                        userEntity.getVisitid().remove(visitidToRemove);
+
+                        userRepository.save(userEntity);
+                    } else {
+                        return "방문 정보가 없습니다!";
+                    }
+
+                } else {
+                    return "유저가 존재하지 않습니다!";
+                }
+            }else{
+                return "해당글이 존재하지 않습니다.";
+            }
+
+            ReviewEntity reviewEntity = reviewOptional.get();
+
+            long visitcount = reviewEntity.getVisitcount();
+            visitcount --;
+
+            reviewEntity.setVisitcount(visitcount);
+
+            reviewRepository.save(reviewEntity);
+
+            return "방문 등록 취소 완료.";
+        }catch(Exception e){
+            e.printStackTrace();
+            return "방문 등록 취소 실패";
         }
     }
 

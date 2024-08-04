@@ -33,6 +33,9 @@ public class ReviewEntity {
     @Column(name = "reviewlocation")
     private String reviewlocation;                    // 게시글의 지역
 
+    @Column(name = "visitcount")                           //방문자 수
+    private Long visitcount;
+
     @Column(name = "xpoint")
     private String reviewxpoint;                      // x좌표
 

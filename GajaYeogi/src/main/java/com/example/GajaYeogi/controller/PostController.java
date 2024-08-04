@@ -94,7 +94,6 @@ public class PostController {
     }
 
     //게시글 수정 postid, postimg, postoldimg, posttitle, postcontent, postlocation, postxpoint, postypoint, postcategory
-
     @PutMapping("/postupdate")
     public ResponseEntity<String> postupdate(@ModelAttribute PostDto postDto){
         try{

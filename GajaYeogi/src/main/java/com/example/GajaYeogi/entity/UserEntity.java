@@ -24,4 +24,7 @@ public class UserEntity {
 
     @OneToMany(mappedBy = "userentity", cascade = CascadeType.ALL, orphanRemoval = true) //스크랩한 게시글 ID
     private List<ScrapEntity> scraps;
+
+    @OneToMany(mappedBy = "userentity", cascade = CascadeType.ALL, orphanRemoval = true) //스크랩한 게시글 ID
+    private List<VisitidEntity> visitid;
 }
