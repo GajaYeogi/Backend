@@ -20,10 +20,10 @@ public class PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
     private final ScrapRepository scrapRepository;
-    private final WriteidRepository writeidRepository;
+    private final PostWriteidRepository writeidRepository;
 
     @Autowired
-    public PostService(PostRepository postRepository, ScrapRepository scrapRepository, WriteidRepository writeidRepository, UserRepository userRepository){
+    public PostService(PostRepository postRepository, ScrapRepository scrapRepository, PostWriteidRepository writeidRepository, UserRepository userRepository){
         this.postRepository = postRepository;
         this.userRepository = userRepository;
         this.scrapRepository = scrapRepository;
@@ -41,7 +41,6 @@ public class PostService {
             postEntity.setPostlocation(postDto.getPostlocation());
             postEntity.setPostxpoint(postDto.getPostxpoint());
             postEntity.setPostypoint(postDto.getPostypoint());
-            postEntity.setPostcategory(postDto.getPostcategory());
             postEntity.setSuggest(0L);
 
             List<PostImgEntity> imageEntities = saveImages(postDto.getPostimg(), postEntity);
@@ -52,13 +51,13 @@ public class PostService {
             Optional<UserEntity> userOptional = userRepository.findByUser(postDto.getPostuser());
 
             if (userOptional.isPresent()) {
-                Optional<WriteidEntity> writeidOptional = writeidRepository.findByWriteid(String.valueOf(postEntity.getPostid()));
+                Optional<PostWriteidEntity> writeidOptional = writeidRepository.findByWriteid(String.valueOf(postEntity.getPostid()));
                 if (writeidOptional.isPresent()) {
                     return ("이미 작성중이 완료된 게시물입니다.");
                 } else {
                     UserEntity newuser = userOptional.get();
-                    WriteidEntity writeid = new WriteidEntity();
-                    writeid.setWriteid(String.valueOf(postEntity.getPostid()));
+                    PostWriteidEntity writeid = new PostWriteidEntity();
+                    writeid.setPostwriteid(String.valueOf(postEntity.getPostid()));
                     writeid.setUserentity(newuser);
 
                     writeidRepository.save(writeid);
@@ -90,7 +89,6 @@ public class PostService {
                 postDto.setPostlocation(entity.getPostlocation());
                 postDto.setPostxpoint(entity.getPostxpoint());
                 postDto.setPostypoint(entity.getPostypoint());
-                postDto.setPostcategory(entity.getPostcategory());
                 postDto.setSuggest(entity.getSuggest());
 
                 List<String> postimgurls = new ArrayList<>();
@@ -127,7 +125,6 @@ public class PostService {
                 postlist.setPostlocation(entity.getPostlocation());
                 postlist.setPostxpoint(entity.getPostxpoint());
                 postlist.setPostypoint(entity.getPostypoint());
-                postlist.setPostcategory(entity.getPostcategory());
                 postlist.setSuggest(entity.getSuggest());
 
                 List<String> postimgurls = new ArrayList<>();
@@ -265,7 +262,6 @@ public class PostService {
                 postEntity.setPostlocation(postDto.getPostlocation());
                 postEntity.setPostxpoint(postDto.getPostxpoint());
                 postEntity.setPostypoint(postDto.getPostypoint());
-                postEntity.setPostcategory(postDto.getPostcategory());
 
                 postRepository.save(postEntity);
 
@@ -307,13 +303,13 @@ public class PostService {
                 Optional<UserEntity> userOptional = userRepository.findByUser(postDto.getPostuser());
 
                 if (userOptional.isPresent()) {
-                    Optional<WriteidEntity> writeidOptional = writeidRepository.findByWriteid(String.valueOf(postDto.getPostid()));
+                    Optional<PostWriteidEntity> writeidOptional = writeidRepository.findByWriteid(String.valueOf(postDto.getPostid()));
 
                     if (writeidOptional.isPresent()) {
                         UserEntity userEntity = userOptional.get();
 
-                        WriteidEntity writeidToRemove = writeidOptional.get();
-                        userEntity.getWriteid().remove(writeidToRemove);
+                        PostWriteidEntity writeidToRemove = writeidOptional.get();
+                        userEntity.getPostwriteid().remove(writeidToRemove);
 
                         userRepository.save(userEntity);
                     }

@@ -20,9 +20,6 @@ public class PostEntity {
     @Column(name = "postuser")
     private String postuser;                        // 게시글 작성자 이메일
 
-    @Column(name = "postcategory")                  // 게시글 카테고리
-    private String postcategory;
-
     @Column(name = "postusername")
     private String postusername;                    // 게시글 작성자 닉네임
 

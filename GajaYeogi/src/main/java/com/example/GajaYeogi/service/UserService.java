@@ -24,8 +24,6 @@ public class UserService {
             String user = userDto.getUser();
             String username = userDto.getUsername();
 
-
-
             Optional<UserEntity> userOptional = userRepository.findByUser(user);
 
             if (userOptional.isPresent()) {
@@ -64,15 +62,20 @@ public class UserService {
                         .collect(Collectors.toList());
                 userdtos.setScrapids(scrapIds);
 
-                List<String> writeids = userEntity.getWriteid().stream()
-                        .map(WriteidEntity::getWriteid)
+                List<String> postwriteids = userEntity.getPostwriteid().stream()
+                        .map(PostWriteidEntity::getPostwriteid)
                         .collect(Collectors.toList());
-                userdtos.setWriteids(writeids);
+                userdtos.setPostwriteids(postwriteids);
+
+                List<String> reviewwriteids = userEntity.getReviewwriteid().stream()
+                        .map(ReviewWriteidEntity::getReviewwriteid)
+                        .collect(Collectors.toList());
+                userdtos.setReviewwriteids(reviewwriteids);
 
                 List<String> visitids = userEntity.getVisitid().stream()
                         .map(VisitidEntity::getVisitid)
                         .collect(Collectors.toList());
-                userdtos.setWriteids(visitids);
+                userdtos.setVisitids(visitids);
             }
         }catch(Exception e){
             e.printStackTrace();

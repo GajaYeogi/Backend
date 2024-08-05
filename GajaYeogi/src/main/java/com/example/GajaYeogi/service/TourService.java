@@ -36,8 +36,8 @@ public class TourService {
                 .queryParam("_type", "json")
                 .queryParam("mapX", postDto.getPostxpoint())
                 .queryParam("mapY", postDto.getPostypoint())
-                .queryParam("radius", 1000);
-                //.queryParam("contentTypeId", 25);
+                .queryParam("radius", 1000)
+                .queryParam("contentTypeId", 12);
 
         URI uri;
         try {

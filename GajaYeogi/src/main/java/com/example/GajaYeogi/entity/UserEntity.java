@@ -20,11 +20,14 @@ public class UserEntity {
     private String username;
 
     @OneToMany(mappedBy = "userentity", cascade = CascadeType.ALL, orphanRemoval = true)  //작성한 게시글 ID
-    private List<WriteidEntity> writeid;
+    private List<PostWriteidEntity> postwriteid;
+
+    @OneToMany(mappedBy = "userentity", cascade = CascadeType.ALL, orphanRemoval = true)  //작성한 게시글 ID
+    private List<ReviewWriteidEntity> reviewwriteid;
 
     @OneToMany(mappedBy = "userentity", cascade = CascadeType.ALL, orphanRemoval = true) //스크랩한 게시글 ID
     private List<ScrapEntity> scraps;
 
-    @OneToMany(mappedBy = "userentity", cascade = CascadeType.ALL, orphanRemoval = true) //스크랩한 게시글 ID
+    @OneToMany(mappedBy = "userentity", cascade = CascadeType.ALL, orphanRemoval = true) //방문자 게시글 ID
     private List<VisitidEntity> visitid;
 }

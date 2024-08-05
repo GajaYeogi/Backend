@@ -1,7 +1,6 @@
 package com.example.GajaYeogi.repository;
 
 import com.example.GajaYeogi.entity.VisitidEntity;
-import com.example.GajaYeogi.entity.WriteidEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

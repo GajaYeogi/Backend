@@ -1,6 +1,5 @@
 package com.example.GajaYeogi.service;
 
-import com.example.GajaYeogi.dto.PostDto;
 import com.example.GajaYeogi.dto.ReviewDto;
 import com.example.GajaYeogi.entity.*;
 import com.example.GajaYeogi.repository.*;
@@ -21,11 +20,11 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final UserRepository userRepository;
     private final ScrapRepository scrapRepository;
-    private final WriteidRepository writeidRepository;
+    private final ReviewWriteidRepository writeidRepository;
     private final VisitidRepository visitidRepository;
 
     @Autowired
-    public ReviewService(ReviewRepository reviewRepository, ScrapRepository scrapRepository, WriteidRepository writeidRepository,
+    public ReviewService(ReviewRepository reviewRepository, ScrapRepository scrapRepository, ReviewWriteidRepository writeidRepository,
                          UserRepository userRepository, VisitidRepository visitidRepository){
         this.reviewRepository = reviewRepository;
         this.userRepository = userRepository;
@@ -55,13 +54,13 @@ public class ReviewService {
             Optional<UserEntity> userOptional = userRepository.findByUser(reviewDto.getReviewuser());
 
             if (userOptional.isPresent()) {
-                Optional<WriteidEntity> writeidOptional = writeidRepository.findByWriteid(String.valueOf(reviewEntity.getReviewid()));
+                Optional<ReviewWriteidEntity> writeidOptional = writeidRepository.findByWriteid(String.valueOf(reviewEntity.getReviewid()));
                 if (writeidOptional.isPresent()) {
                     return ("이미 작성중이 완료된 게시물입니다.");
                 } else {
                     UserEntity newuser = userOptional.get();
-                    WriteidEntity writeid = new WriteidEntity();
-                    writeid.setWriteid(String.valueOf(reviewEntity.getReviewid()));
+                    ReviewWriteidEntity writeid = new ReviewWriteidEntity();
+                    writeid.setReviewwriteid(String.valueOf(reviewEntity.getReviewid()));
                     writeid.setUserentity(newuser);
 
                     writeidRepository.save(writeid);
@@ -305,13 +304,13 @@ public class ReviewService {
                 Optional<UserEntity> userOptional = userRepository.findByUser(reviewDto.getReviewuser());
 
                 if (userOptional.isPresent()) {
-                    Optional<WriteidEntity> writeidOptional = writeidRepository.findByWriteid(String.valueOf(reviewDto.getReviewid()));
+                    Optional<ReviewWriteidEntity> writeidOptional = writeidRepository.findByWriteid(String.valueOf(reviewDto.getReviewid()));
 
                     if (writeidOptional.isPresent()) {
                         UserEntity userEntity = userOptional.get();
 
-                        WriteidEntity writeidToRemove = writeidOptional.get();
-                        userEntity.getWriteid().remove(writeidToRemove);
+                        ReviewWriteidEntity writeidToRemove = writeidOptional.get();
+                        userEntity.getReviewwriteid().remove(writeidToRemove);
 
                         userRepository.save(userEntity);
                     }
