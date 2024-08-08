@@ -30,7 +30,7 @@ public class TourService {
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(urlRoot)
                 .queryParam("serviceKey", apiKey)
                 .queryParam("pageNo", 1)
-                .queryParam("numOfRows", 100)
+                .queryParam("numOfRows", 10)
                 .queryParam("MobileOS", "ETC")
                 .queryParam("MobileApp", "AppTest")
                 .queryParam("_type", "json")
