@@ -54,7 +54,7 @@ public class ReviewService {
             Optional<UserEntity> userOptional = userRepository.findByUser(reviewDto.getReviewuser());
 
             if (userOptional.isPresent()) {
-                Optional<ReviewWriteidEntity> writeidOptional = writeidRepository.findByWriteid(String.valueOf(reviewEntity.getReviewid()));
+                Optional<ReviewWriteidEntity> writeidOptional = writeidRepository.findByReviewwriteid(String.valueOf(reviewEntity.getReviewid()));
                 if (writeidOptional.isPresent()) {
                     return ("이미 작성중이 완료된 게시물입니다.");
                 } else {
@@ -304,7 +304,7 @@ public class ReviewService {
                 Optional<UserEntity> userOptional = userRepository.findByUser(reviewDto.getReviewuser());
 
                 if (userOptional.isPresent()) {
-                    Optional<ReviewWriteidEntity> writeidOptional = writeidRepository.findByWriteid(String.valueOf(reviewDto.getReviewid()));
+                    Optional<ReviewWriteidEntity> writeidOptional = writeidRepository.findByReviewwriteid(String.valueOf(reviewDto.getReviewid()));
 
                     if (writeidOptional.isPresent()) {
                         UserEntity userEntity = userOptional.get();

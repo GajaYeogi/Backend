@@ -51,7 +51,7 @@ public class PostService {
             Optional<UserEntity> userOptional = userRepository.findByUser(postDto.getPostuser());
 
             if (userOptional.isPresent()) {
-                Optional<PostWriteidEntity> writeidOptional = writeidRepository.findByWriteid(String.valueOf(postEntity.getPostid()));
+                Optional<PostWriteidEntity> writeidOptional = writeidRepository.findByPostwriteid(String.valueOf(postEntity.getPostid()));
                 if (writeidOptional.isPresent()) {
                     return ("이미 작성중이 완료된 게시물입니다.");
                 } else {
@@ -303,7 +303,7 @@ public class PostService {
                 Optional<UserEntity> userOptional = userRepository.findByUser(postDto.getPostuser());
 
                 if (userOptional.isPresent()) {
-                    Optional<PostWriteidEntity> writeidOptional = writeidRepository.findByWriteid(String.valueOf(postDto.getPostid()));
+                    Optional<PostWriteidEntity> writeidOptional = writeidRepository.findByPostwriteid(String.valueOf(postDto.getPostid()));
 
                     if (writeidOptional.isPresent()) {
                         UserEntity userEntity = userOptional.get();

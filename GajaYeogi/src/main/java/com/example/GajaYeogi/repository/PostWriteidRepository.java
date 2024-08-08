@@ -8,5 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface PostWriteidRepository extends JpaRepository<PostWriteidEntity, Long> {
-    Optional<PostWriteidEntity> findByWriteid(String writeid);
+    Optional<PostWriteidEntity> findByPostwriteid(String writeid);
 }

@@ -9,5 +9,5 @@ import java.util.Optional;
 
 @Repository
 public interface ReviewWriteidRepository extends JpaRepository<ReviewWriteidEntity, Long> {
-    Optional<ReviewWriteidEntity> findByWriteid(String writeid);
+    Optional<ReviewWriteidEntity> findByReviewwriteid(String writeid);
 }
