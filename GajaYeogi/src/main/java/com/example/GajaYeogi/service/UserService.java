@@ -19,6 +19,8 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    
+    //유저 정보 저장
     public String saveuser(UserDto userDto){
         try {
             String user = userDto.getUser();
@@ -33,6 +35,7 @@ public class UserService {
             UserEntity userEntity = new UserEntity();
             userEntity.setUser(user);
             userEntity.setUsername(username);
+            userEntity.setIntroduction("자기소개를 넣어주세요.");
 
             userRepository.save(userEntity);
 
@@ -43,6 +46,7 @@ public class UserService {
         }
     }
 
+    //유저 조회
     public UserDto readuser(UserDto userDto){
         UserDto userdtos = new UserDto();
         try{
@@ -56,6 +60,7 @@ public class UserService {
                 userdtos.setUserid(userEntity.getUserid());
                 userdtos.setUser(userEntity.getUser());
                 userdtos.setUsername(userEntity.getUsername());
+                userdtos.setIntroduction(userEntity.getIntroduction());
 
                 List<String> scrapIds = userEntity.getScraps().stream()
                         .map(ScrapEntity::getScrapid)
@@ -81,5 +86,26 @@ public class UserService {
             e.printStackTrace();
         }
         return userdtos;
+    }
+
+    //자기소개 작성
+    public String saveintroduction(UserDto userDto){
+        try{
+            String user = userDto.getUser();
+
+            Optional<UserEntity> userOptional = userRepository.findByUser(user);
+
+            if (userOptional.isPresent()) {
+                UserEntity userEntity = userOptional.get();
+                userEntity.setIntroduction(userDto.getIntroduction());
+                
+                userRepository.save(userEntity);
+            }else{
+                return("해당하는 유저가 존재하지 않습니다.");
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return("자기소개 작성 완료.");
     }
 }

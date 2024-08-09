@@ -19,6 +19,9 @@ public class UserEntity {
     @Column(name = "username")                                  //유저 닉네임
     private String username;
 
+    @Column(name = "Introduction")
+    private String Introduction;
+
     @OneToMany(mappedBy = "userentity", cascade = CascadeType.ALL, orphanRemoval = true)  //작성한 게시글 ID
     private List<PostWriteidEntity> postwriteid;
 

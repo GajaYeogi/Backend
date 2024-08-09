@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
     private final UserService userservice;
     private UserController(UserService userservice){this.userservice = userservice;}
+    
+    // 유저 저장
     @PostMapping("/saveuser")
     public ResponseEntity<String> saveuser(@RequestParam(value = "user") String user,
                                            @RequestParam(value = "username") String username){
@@ -28,6 +30,7 @@ public class UserController {
         }
     }
 
+    // 유저 조회
     @PostMapping("/readuser")
     public ResponseEntity<UserDto> readuser(@RequestParam(value = "user") String user){
         try{
@@ -36,9 +39,26 @@ public class UserController {
 
             UserDto userlist = userservice.readuser(userDto);
 
-
             return ResponseEntity.ok(userlist);
         }catch(Exception e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    // 자기소개 저장
+    @PostMapping("/savenintroduction")
+    public ResponseEntity<String> savenintroduction(@RequestParam(value = "user") String user,
+                                                    @RequestParam(value = "introduction") String introduction) {
+        try{
+            UserDto userDto = new UserDto();
+            userDto.setUser(user);
+            userDto.setIntroduction(introduction);
+
+            String userresponse = userservice.saveintroduction(userDto);
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(userresponse);
+        }catch (Exception e){
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
