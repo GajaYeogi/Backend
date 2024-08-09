@@ -57,6 +57,24 @@ public class ReviewController {
         }
     }
 
+    //게시글 검색 제목과 작성자중 하나만 사용하고 사용하지 않는건 비워두기.
+    @GetMapping("/reviewsearch")
+    public ResponseEntity<ReviewDto> postsearch(@RequestParam(value = "reviewtitle") String reviewtitle,
+                                              @RequestParam(value = "reviewuser") String reviewuser){
+        try{
+            ReviewDto reviewDto = new ReviewDto();
+            reviewDto.setReviewtitle(reviewtitle);
+            reviewDto.setReviewuser(reviewuser);
+
+            ReviewDto reviewlist = reviewService.SearchReview(reviewDto);
+            return ResponseEntity.ok(reviewlist);
+
+        }catch(Exception e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
     @GetMapping("/visitcount")
     public ResponseEntity<String> visitcount(@RequestParam(value = "reviewid") String reviewid,
                                             @RequestParam(value = "reviewuser") String reviewuser){

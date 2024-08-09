@@ -1,5 +1,6 @@
 package com.example.GajaYeogi.service;
 
+import com.example.GajaYeogi.dto.PostDto;
 import com.example.GajaYeogi.dto.ReviewDto;
 import com.example.GajaYeogi.entity.*;
 import com.example.GajaYeogi.repository.*;
@@ -136,6 +137,66 @@ public class ReviewService {
                 reviewlist.setReviewimgurl(reviewimgurls);
             }
         }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return reviewlist;
+    }
+
+    public ReviewDto SearchReview(ReviewDto reviewDto){
+        ReviewDto reviewlist = new ReviewDto();
+
+        try{
+            if(reviewDto.getReviewtitle() != null){
+                Optional<ReviewEntity> reviewOptional = reviewRepository.findByReviewtitle(reviewDto.getReviewtitle());
+
+                if (reviewOptional.isPresent()) {
+                    ReviewEntity entity = reviewOptional.get();
+
+                    reviewlist.setReviewid(String.valueOf(entity.getReviewid()));
+                    reviewlist.setReviewuser(entity.getReviewuser());
+                    reviewlist.setReviewusername(entity.getReviewusername());
+                    reviewlist.setReviewtitle(entity.getReviewtitle());
+                    reviewlist.setReviewcontent(entity.getReviewcontent());
+                    reviewlist.setReviewlocation(entity.getReviewlocation());
+                    reviewlist.setReviewxpoint(entity.getReviewxpoint());
+                    reviewlist.setReviewypoint(entity.getReviewypoint());
+
+                    List<String> reviewimgurls = new ArrayList<>();
+                    for(int i = 0; i < entity.getReviewimage().size(); i++){
+                        String reviewimgurl = entity.getReviewimage().get(i).getReviewimgpath();
+                        reviewimgurls.add(reviewimgurl);
+                    }
+                    reviewlist.setReviewimgurl(reviewimgurls);
+                }else{
+                    System.out.println("제목 결과 값이 없습니다.");
+                }
+            }else if(reviewDto.getReviewuser() != null){
+                Optional<ReviewEntity> reviewOptional = reviewRepository.findByReviewuser(reviewDto.getReviewuser());
+
+                if (reviewOptional.isPresent()) {
+                    ReviewEntity entity = reviewOptional.get();
+
+                    reviewlist.setReviewid(String.valueOf(entity.getReviewid()));
+                    reviewlist.setReviewuser(entity.getReviewuser());
+                    reviewlist.setReviewusername(entity.getReviewusername());
+                    reviewlist.setReviewtitle(entity.getReviewtitle());
+                    reviewlist.setReviewcontent(entity.getReviewcontent());
+                    reviewlist.setReviewlocation(entity.getReviewlocation());
+                    reviewlist.setReviewxpoint(entity.getReviewxpoint());
+                    reviewlist.setReviewypoint(entity.getReviewypoint());
+
+                    List<String> reviewimgurls = new ArrayList<>();
+                    for(int i = 0; i < entity.getReviewimage().size(); i++){
+                        String reviewimgurl = entity.getReviewimage().get(i).getReviewimgpath();
+                        reviewimgurls.add(reviewimgurl);
+                    }
+                    reviewlist.setReviewimgurl(reviewimgurls);
+                }else{
+                    System.out.println("유저 결과 값이 없습니다.");
+                }
+            }
+        }catch(Exception e){
             e.printStackTrace();
         }
 

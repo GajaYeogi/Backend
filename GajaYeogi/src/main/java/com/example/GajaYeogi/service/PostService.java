@@ -141,6 +141,72 @@ public class PostService {
         return postlist;
     }
 
+    public PostDto SearchPost(PostDto postDto){
+        PostDto postlist = new PostDto();
+
+        try{
+
+            if(postDto.getPosttitle() != null){
+                Optional<PostEntity> postOptional = postRepository.findByPosttitle(postDto.getPosttitle());
+
+                if (postOptional.isPresent()) {
+                    PostEntity entity = postOptional.get();
+
+                    postlist.setPostid(String.valueOf(entity.getPostid()));
+                    postlist.setPostuser(entity.getPostuser());
+                    postlist.setPostusername(entity.getPostusername());
+                    postlist.setPosttitle(entity.getPosttitle());
+                    postlist.setPostcontent(entity.getPostcontent());
+                    postlist.setPostlocation(entity.getPostlocation());
+                    postlist.setPostxpoint(entity.getPostxpoint());
+                    postlist.setPostypoint(entity.getPostypoint());
+                    postlist.setSuggest(entity.getSuggest());
+
+                    List<String> postimgurls = new ArrayList<>();
+                    for(int i = 0; i < entity.getPostimage().size(); i++){
+                        String postimgurl = entity.getPostimage().get(i).getPostimgpath();
+                        postimgurls.add(postimgurl);
+                    }
+                    postlist.setPostimgurl(postimgurls);
+                }else{
+                    System.out.println("제목 결과 값이 없습니다.");
+                }
+
+            }else if(postDto.getPostuser() != null){
+                Optional<PostEntity> postOptional = postRepository.findByPostuser(postDto.getPostuser());
+
+                if (postOptional.isPresent()) {
+                    PostEntity entity = postOptional.get();
+
+                    postlist.setPostid(String.valueOf(entity.getPostid()));
+                    postlist.setPostuser(entity.getPostuser());
+                    postlist.setPostusername(entity.getPostusername());
+                    postlist.setPosttitle(entity.getPosttitle());
+                    postlist.setPostcontent(entity.getPostcontent());
+                    postlist.setPostlocation(entity.getPostlocation());
+                    postlist.setPostxpoint(entity.getPostxpoint());
+                    postlist.setPostypoint(entity.getPostypoint());
+                    postlist.setSuggest(entity.getSuggest());
+
+                    List<String> postimgurls = new ArrayList<>();
+                    for(int i = 0; i < entity.getPostimage().size(); i++){
+                        String postimgurl = entity.getPostimage().get(i).getPostimgpath();
+                        postimgurls.add(postimgurl);
+                    }
+                    postlist.setPostimgurl(postimgurls);
+                }else{
+                    System.out.println("유저 결과 값이 없습니다.");
+                }
+            }else{
+                System.out.println("유저와 제목결과값이 없습니다.");
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return postlist;
+    }
+
     //게시글 추천
     public String suggestPost(PostDto postDto){
         try{

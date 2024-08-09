@@ -93,6 +93,24 @@ public class PostController {
         }
     }
 
+    //게시글 검색 제목과 작성자중 하나만 사용하고 사용하지 않는건 비워두기.
+    @GetMapping("/postsearch")
+    public ResponseEntity<PostDto> postsearch(@RequestParam(value = "posttitle") String posttitle,
+                                              @RequestParam(value = "postuser") String postuser){
+        try{
+            PostDto postDto = new PostDto();
+            postDto.setPosttitle(posttitle);
+            postDto.setPostuser(postuser);
+
+            PostDto postlist = postService.SearchPost(postDto);
+            return ResponseEntity.ok(postlist);
+
+        }catch(Exception e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
     //게시글 수정 postid, postimg, postoldimg, posttitle, postcontent, postlocation, postxpoint, postypoint
     @PutMapping("/postupdate")
     public ResponseEntity<String> postupdate(@ModelAttribute PostDto postDto){
