@@ -76,8 +76,8 @@ public class ReviewController {
     }
 
     @GetMapping("/visitcount")
-    public ResponseEntity<String> visitcount(@RequestParam(value = "reviewid") String reviewid,
-                                            @RequestParam(value = "reviewuser") String reviewuser){
+    public ResponseEntity<String> visitcount(@RequestParam(value = "reviewid", required = false) String reviewid,
+                                            @RequestParam(value = "reviewuser", required = false) String reviewuser){
         try{
             ReviewDto reviewDto = new ReviewDto();
             reviewDto.setReviewid(reviewid);
