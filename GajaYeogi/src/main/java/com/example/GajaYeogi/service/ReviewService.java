@@ -148,7 +148,7 @@ public class ReviewService {
 
         try{
             if(reviewDto.getReviewtitle() != null){
-                Optional<ReviewEntity> reviewOptional = reviewRepository.findByReviewtitle(reviewDto.getReviewtitle());
+                Optional<ReviewEntity> reviewOptional = reviewRepository.findByReviewtitleContaining(reviewDto.getReviewtitle());
 
                 if (reviewOptional.isPresent()) {
                     ReviewEntity entity = reviewOptional.get();

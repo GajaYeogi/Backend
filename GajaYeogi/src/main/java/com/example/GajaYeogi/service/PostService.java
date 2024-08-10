@@ -147,7 +147,7 @@ public class PostService {
         try{
 
             if(postDto.getPosttitle() != null){
-                Optional<PostEntity> postOptional = postRepository.findByPosttitle(postDto.getPosttitle());
+                Optional<PostEntity> postOptional = postRepository.findByPosttitleContaining(postDto.getPosttitle());
 
                 if (postOptional.isPresent()) {
                     PostEntity entity = postOptional.get();

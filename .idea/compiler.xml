@@ -2,6 +2,7 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
       <profile name="Gradle Imported" enabled="true">
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
@@ -10,9 +11,5 @@
         <module name="com.example.GajaYeogi.main" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="GajaYeogi.GajaYeogi.main" target="21" />
-      <module name="GajaYeogi.GajaYeogi.test" target="21" />
-    </bytecodeTargetLevel>
   </component>
 </project>
