@@ -149,6 +149,7 @@ public class ReviewService {
 
         try{
             List<ReviewEntity> reviewOptional = reviewRepository.findByReviewtitleContaining(reviewDto.getReviewtitle());
+            List<ReviewEntity> userOptional = reviewRepository.findByReviewusername(reviewDto.getReviewusername());
 
             if (reviewDto.getReviewtitle() != null) {
                 for(ReviewEntity entity : reviewOptional) {
@@ -173,32 +174,27 @@ public class ReviewService {
                     reviewlist.add(reviewDtos);
                 }
             }
-            else if (reviewDto.getReviewuser() != null) {
-                Optional<ReviewEntity> userOptional = reviewRepository.findByReviewusername(reviewDto.getReviewusername());
+            else if (reviewDto.getReviewusername() != null) {
+                for(ReviewEntity entity: userOptional) {
+                    ReviewDto userDtos = new ReviewDto();
 
-                if(userOptional.isPresent()) {
-                    ReviewEntity entity = userOptional.get();
-                    ReviewDto reviewDtos = new ReviewDto();
-
-                    reviewDtos.setReviewid(String.valueOf(entity.getReviewid()));
-                    reviewDtos.setReviewuser(entity.getReviewuser());
-                    reviewDtos.setReviewusername(entity.getReviewusername());
-                    reviewDtos.setReviewtitle(entity.getReviewtitle());
-                    reviewDtos.setReviewcontent(entity.getReviewcontent());
-                    reviewDtos.setReviewlocation(entity.getReviewlocation());
-                    reviewDtos.setReviewxpoint(entity.getReviewxpoint());
-                    reviewDtos.setReviewypoint(entity.getReviewypoint());
+                    userDtos.setReviewid(String.valueOf(entity.getReviewid()));
+                    userDtos.setReviewuser(entity.getReviewuser());
+                    userDtos.setReviewusername(entity.getReviewusername());
+                    userDtos.setReviewtitle(entity.getReviewtitle());
+                    userDtos.setReviewcontent(entity.getReviewcontent());
+                    userDtos.setReviewlocation(entity.getReviewlocation());
+                    userDtos.setReviewxpoint(entity.getReviewxpoint());
+                    userDtos.setReviewypoint(entity.getReviewypoint());
 
                     List<String> reviewimgurls = new ArrayList<>();
                     for (int i = 0; i < entity.getReviewimage().size(); i++) {
                         String reviewimgurl = entity.getReviewimage().get(i).getReviewimgpath();
                         reviewimgurls.add(reviewimgurl);
                     }
-                    reviewDtos.setReviewimgurl(reviewimgurls);
+                    userDtos.setReviewimgurl(reviewimgurls);
 
-                    reviewlist.add(reviewDtos);
-                }else{
-                    System.out.println("유저 결과값이 없습니다.");
+                    reviewlist.add(userDtos);
                 }
             }
         }catch(Exception e){

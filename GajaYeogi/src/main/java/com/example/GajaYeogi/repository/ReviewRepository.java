@@ -14,5 +14,5 @@ import java.util.Optional;
 public interface ReviewRepository extends JpaRepository<ReviewEntity, Long> {
     @Query("SELECT r FROM ReviewEntity r WHERE r.reviewtitle LIKE %:reviewtitle%")
     List<ReviewEntity> findByReviewtitleContaining(@Param("reviewtitle") String reviewtitle);
-    Optional<ReviewEntity> findByReviewusername(String reviewusername);
+    List<ReviewEntity> findByReviewusername(String reviewusername);
 }

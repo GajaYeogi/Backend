@@ -147,6 +147,7 @@ public class PostService {
 
         try{
             List<PostEntity> postOptional = postRepository.findByPosttitleContaining(postDto.getPosttitle());
+            List<PostEntity> userOptional = postRepository.findByPostusername(postDto.getPostusername());
             if (postDto.getPosttitle() != null) {
                 for(PostEntity entity : postOptional) {
                     PostDto postDtos = new PostDto();
@@ -169,38 +170,33 @@ public class PostService {
                     postDtos.setPostimgurl(postimgurls);
                     postlist.add(postDtos);
                 }
-            } else if (postDto.getPostuser() != null) {
-                Optional<PostEntity> userOptional = postRepository.findByPostusername(postDto.getPostusername());
+                } else if (postDto.getPostusername() != null) {
+                    for(PostEntity entity : userOptional) {
+                        PostDto userDtos = new PostDto();
 
-                if(userOptional.isPresent()) {
-                    PostEntity entity = userOptional.get();
-                    PostDto postDtos = new PostDto();
+                        userDtos.setPostid(String.valueOf(entity.getPostid()));
+                        userDtos.setPostuser(entity.getPostuser());
+                        userDtos.setPostusername(entity.getPostusername());
+                        userDtos.setPosttitle(entity.getPosttitle());
+                        userDtos.setPostcontent(entity.getPostcontent());
+                        userDtos.setPostlocation(entity.getPostlocation());
+                        userDtos.setPostxpoint(entity.getPostxpoint());
+                        userDtos.setPostypoint(entity.getPostypoint());
+                        userDtos.setSuggest(entity.getSuggest());
 
-                    postDtos.setPostid(String.valueOf(entity.getPostid()));
-                    postDtos.setPostuser(entity.getPostuser());
-                    postDtos.setPostusername(entity.getPostusername());
-                    postDtos.setPosttitle(entity.getPosttitle());
-                    postDtos.setPostcontent(entity.getPostcontent());
-                    postDtos.setPostlocation(entity.getPostlocation());
-                    postDtos.setPostxpoint(entity.getPostxpoint());
-                    postDtos.setPostypoint(entity.getPostypoint());
-                    postDtos.setSuggest(entity.getSuggest());
+                        List<String> postimgurls = new ArrayList<>();
+                        for (int i = 0; i < entity.getPostimage().size(); i++) {
+                            String postimgurl = entity.getPostimage().get(i).getPostimgpath();
+                            postimgurls.add(postimgurl);
+                        }
+                        userDtos.setPostimgurl(postimgurls);
 
-                    List<String> postimgurls = new ArrayList<>();
-                    for (int i = 0; i < entity.getPostimage().size(); i++) {
-                        String postimgurl = entity.getPostimage().get(i).getPostimgpath();
-                        postimgurls.add(postimgurl);
+                        postlist.add(userDtos);
                     }
-                    postDtos.setPostimgurl(postimgurls);
-
-                    postlist.add(postDtos);
-                }else {
-                    System.out.println("유저 결과 값이 없습니다.");
                 }
-            } 
-        }catch(Exception e){
-            e.printStackTrace();
-        }
+            }catch(Exception e){
+                e.printStackTrace();
+            }
 
         return postlist;
     }
