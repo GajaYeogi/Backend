@@ -141,17 +141,15 @@ public class PostService {
         return postlist;
     }
 
+    // 포스트 검색
     public PostDto SearchPost(PostDto postDto){
         PostDto postlist = new PostDto();
 
         try{
+            List<PostEntity> postOptional = postRepository.findByPosttitleContaining(postDto.getPosttitle());
 
-            if(postDto.getPosttitle() != null){
-                Optional<PostEntity> postOptional = postRepository.findByPosttitleContaining(postDto.getPosttitle());
-
-                if (postOptional.isPresent()) {
-                    PostEntity entity = postOptional.get();
-
+            if (postDto.getPosttitle() != null) {
+                for(PostEntity entity : postOptional) {
                     postlist.setPostid(String.valueOf(entity.getPostid()));
                     postlist.setPostuser(entity.getPostuser());
                     postlist.setPostusername(entity.getPostusername());
@@ -163,20 +161,17 @@ public class PostService {
                     postlist.setSuggest(entity.getSuggest());
 
                     List<String> postimgurls = new ArrayList<>();
-                    for(int i = 0; i < entity.getPostimage().size(); i++){
+                    for (int i = 0; i < entity.getPostimage().size(); i++) {
                         String postimgurl = entity.getPostimage().get(i).getPostimgpath();
                         postimgurls.add(postimgurl);
                     }
                     postlist.setPostimgurl(postimgurls);
-                }else{
-                    System.out.println("제목 결과 값이 없습니다.");
                 }
+            } else if (postDto.getPostuser() != null) {
+                Optional<PostEntity> userOptional = postRepository.findByPostuser(postDto.getPostuser());
 
-            }else if(postDto.getPostuser() != null){
-                Optional<PostEntity> postOptional = postRepository.findByPostuser(postDto.getPostuser());
-
-                if (postOptional.isPresent()) {
-                    PostEntity entity = postOptional.get();
+                if(userOptional.isPresent()) {
+                    PostEntity entity = userOptional.get();
 
                     postlist.setPostid(String.valueOf(entity.getPostid()));
                     postlist.setPostuser(entity.getPostuser());
@@ -189,17 +184,15 @@ public class PostService {
                     postlist.setSuggest(entity.getSuggest());
 
                     List<String> postimgurls = new ArrayList<>();
-                    for(int i = 0; i < entity.getPostimage().size(); i++){
+                    for (int i = 0; i < entity.getPostimage().size(); i++) {
                         String postimgurl = entity.getPostimage().get(i).getPostimgpath();
                         postimgurls.add(postimgurl);
                     }
                     postlist.setPostimgurl(postimgurls);
-                }else{
+                }else {
                     System.out.println("유저 결과 값이 없습니다.");
                 }
-            }else{
-                System.out.println("유저와 제목결과값이 없습니다.");
-            }
+            } 
         }catch(Exception e){
             e.printStackTrace();
         }

@@ -143,16 +143,15 @@ public class ReviewService {
         return reviewlist;
     }
 
+    //리뷰 검색
     public ReviewDto SearchReview(ReviewDto reviewDto){
         ReviewDto reviewlist = new ReviewDto();
 
         try{
-            if(reviewDto.getReviewtitle() != null){
-                Optional<ReviewEntity> reviewOptional = reviewRepository.findByReviewtitleContaining(reviewDto.getReviewtitle());
+            List<ReviewEntity> reviewOptional = reviewRepository.findByReviewtitleContaining(reviewDto.getReviewtitle());
 
-                if (reviewOptional.isPresent()) {
-                    ReviewEntity entity = reviewOptional.get();
-
+            if (reviewDto.getReviewtitle() != null) {
+                for(ReviewEntity entity : reviewOptional) {
                     reviewlist.setReviewid(String.valueOf(entity.getReviewid()));
                     reviewlist.setReviewuser(entity.getReviewuser());
                     reviewlist.setReviewusername(entity.getReviewusername());
@@ -163,20 +162,18 @@ public class ReviewService {
                     reviewlist.setReviewypoint(entity.getReviewypoint());
 
                     List<String> reviewimgurls = new ArrayList<>();
-                    for(int i = 0; i < entity.getReviewimage().size(); i++){
+                    for (int i = 0; i < entity.getReviewimage().size(); i++) {
                         String reviewimgurl = entity.getReviewimage().get(i).getReviewimgpath();
                         reviewimgurls.add(reviewimgurl);
                     }
                     reviewlist.setReviewimgurl(reviewimgurls);
-                }else{
-                    System.out.println("제목 결과 값이 없습니다.");
                 }
-            }else if(reviewDto.getReviewuser() != null){
-                Optional<ReviewEntity> reviewOptional = reviewRepository.findByReviewuser(reviewDto.getReviewuser());
+            }
+            else if (reviewDto.getReviewuser() != null) {
+                Optional<ReviewEntity> userOptional = reviewRepository.findByReviewuser(reviewDto.getReviewuser());
 
-                if (reviewOptional.isPresent()) {
-                    ReviewEntity entity = reviewOptional.get();
-
+                if(userOptional.isPresent()) {
+                    ReviewEntity entity = userOptional.get();
                     reviewlist.setReviewid(String.valueOf(entity.getReviewid()));
                     reviewlist.setReviewuser(entity.getReviewuser());
                     reviewlist.setReviewusername(entity.getReviewusername());
@@ -187,13 +184,13 @@ public class ReviewService {
                     reviewlist.setReviewypoint(entity.getReviewypoint());
 
                     List<String> reviewimgurls = new ArrayList<>();
-                    for(int i = 0; i < entity.getReviewimage().size(); i++){
+                    for (int i = 0; i < entity.getReviewimage().size(); i++) {
                         String reviewimgurl = entity.getReviewimage().get(i).getReviewimgpath();
                         reviewimgurls.add(reviewimgurl);
                     }
                     reviewlist.setReviewimgurl(reviewimgurls);
                 }else{
-                    System.out.println("유저 결과 값이 없습니다.");
+                    System.out.println("유저 결과값이 없습니다.");
                 }
             }
         }catch(Exception e){
