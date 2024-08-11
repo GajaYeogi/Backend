@@ -20,7 +20,7 @@ public class PostController {
         this.postService = postService;
     }
 
-    //글 작성 postuser, postusername, posttitle, postcontent, postimg, postlocation, postxpoint, postypoint, postcategory
+    //글 작성 postuser, postusername, posttitle, postcontent, postimg, postlocation, postxpoint, postypoint
     @PostMapping("/postwrite")
     public ResponseEntity<String> writepost(@ModelAttribute PostDto postDto){
         try{
