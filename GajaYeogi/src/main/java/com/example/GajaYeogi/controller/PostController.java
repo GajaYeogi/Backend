@@ -96,11 +96,11 @@ public class PostController {
     //게시글 검색 제목과 작성자중 하나만 사용하고 사용하지 않는건 비워두기.
     @GetMapping("/postsearch")
     public ResponseEntity<List<PostDto>> postsearch(@RequestParam(value = "posttitle", required = false) String posttitle,
-                                              @RequestParam(value = "postuser", required = false) String postuser){
+                                              @RequestParam(value = "postusername", required = false) String postusername){
         try{
             PostDto postDto = new PostDto();
             postDto.setPosttitle(posttitle);
-            postDto.setPostuser(postuser);
+            postDto.setPostusername(postusername);
 
             List<PostDto> postlist = postService.SearchPost(postDto);
             return ResponseEntity.ok(postlist);

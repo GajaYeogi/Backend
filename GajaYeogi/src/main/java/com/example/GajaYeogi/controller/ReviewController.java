@@ -60,11 +60,11 @@ public class ReviewController {
     //게시글 검색 제목과 작성자중 하나만 사용하고 사용하지 않는건 비워두기.
     @GetMapping("/reviewsearch")
     public ResponseEntity<List<ReviewDto>> postsearch(@RequestParam(value = "reviewtitle") String reviewtitle,
-                                              @RequestParam(value = "reviewuser") String reviewuser){
+                                              @RequestParam(value = "reviewusername") String reviewusername){
         try{
             ReviewDto reviewDto = new ReviewDto();
             reviewDto.setReviewtitle(reviewtitle);
-            reviewDto.setReviewuser(reviewuser);
+            reviewDto.setReviewuser(reviewusername);
 
             List<ReviewDto> reviewlist = reviewService.SearchReview(reviewDto);
             return ResponseEntity.ok(reviewlist);
