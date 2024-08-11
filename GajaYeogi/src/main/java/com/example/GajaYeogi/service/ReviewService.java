@@ -144,29 +144,32 @@ public class ReviewService {
     }
 
     //리뷰 검색
-    public ReviewDto SearchReview(ReviewDto reviewDto){
-        ReviewDto reviewlist = new ReviewDto();
+    public List<ReviewDto> SearchReview(ReviewDto reviewDto){
+        List<ReviewDto> reviewlist = new ArrayList<>();
 
         try{
             List<ReviewEntity> reviewOptional = reviewRepository.findByReviewtitleContaining(reviewDto.getReviewtitle());
+            ReviewDto reviewDtos = new ReviewDto();
 
             if (reviewDto.getReviewtitle() != null) {
                 for(ReviewEntity entity : reviewOptional) {
-                    reviewlist.setReviewid(String.valueOf(entity.getReviewid()));
-                    reviewlist.setReviewuser(entity.getReviewuser());
-                    reviewlist.setReviewusername(entity.getReviewusername());
-                    reviewlist.setReviewtitle(entity.getReviewtitle());
-                    reviewlist.setReviewcontent(entity.getReviewcontent());
-                    reviewlist.setReviewlocation(entity.getReviewlocation());
-                    reviewlist.setReviewxpoint(entity.getReviewxpoint());
-                    reviewlist.setReviewypoint(entity.getReviewypoint());
+                    reviewDtos.setReviewid(String.valueOf(entity.getReviewid()));
+                    reviewDtos.setReviewuser(entity.getReviewuser());
+                    reviewDtos.setReviewusername(entity.getReviewusername());
+                    reviewDtos.setReviewtitle(entity.getReviewtitle());
+                    reviewDtos.setReviewcontent(entity.getReviewcontent());
+                    reviewDtos.setReviewlocation(entity.getReviewlocation());
+                    reviewDtos.setReviewxpoint(entity.getReviewxpoint());
+                    reviewDtos.setReviewypoint(entity.getReviewypoint());
 
                     List<String> reviewimgurls = new ArrayList<>();
                     for (int i = 0; i < entity.getReviewimage().size(); i++) {
                         String reviewimgurl = entity.getReviewimage().get(i).getReviewimgpath();
                         reviewimgurls.add(reviewimgurl);
                     }
-                    reviewlist.setReviewimgurl(reviewimgurls);
+                    reviewDtos.setReviewimgurl(reviewimgurls);
+
+                    reviewlist.add(reviewDtos);
                 }
             }
             else if (reviewDto.getReviewuser() != null) {
@@ -174,21 +177,23 @@ public class ReviewService {
 
                 if(userOptional.isPresent()) {
                     ReviewEntity entity = userOptional.get();
-                    reviewlist.setReviewid(String.valueOf(entity.getReviewid()));
-                    reviewlist.setReviewuser(entity.getReviewuser());
-                    reviewlist.setReviewusername(entity.getReviewusername());
-                    reviewlist.setReviewtitle(entity.getReviewtitle());
-                    reviewlist.setReviewcontent(entity.getReviewcontent());
-                    reviewlist.setReviewlocation(entity.getReviewlocation());
-                    reviewlist.setReviewxpoint(entity.getReviewxpoint());
-                    reviewlist.setReviewypoint(entity.getReviewypoint());
+                    reviewDtos.setReviewid(String.valueOf(entity.getReviewid()));
+                    reviewDtos.setReviewuser(entity.getReviewuser());
+                    reviewDtos.setReviewusername(entity.getReviewusername());
+                    reviewDtos.setReviewtitle(entity.getReviewtitle());
+                    reviewDtos.setReviewcontent(entity.getReviewcontent());
+                    reviewDtos.setReviewlocation(entity.getReviewlocation());
+                    reviewDtos.setReviewxpoint(entity.getReviewxpoint());
+                    reviewDtos.setReviewypoint(entity.getReviewypoint());
 
                     List<String> reviewimgurls = new ArrayList<>();
                     for (int i = 0; i < entity.getReviewimage().size(); i++) {
                         String reviewimgurl = entity.getReviewimage().get(i).getReviewimgpath();
                         reviewimgurls.add(reviewimgurl);
                     }
-                    reviewlist.setReviewimgurl(reviewimgurls);
+                    reviewDtos.setReviewimgurl(reviewimgurls);
+
+                    reviewlist.add(reviewDtos);
                 }else{
                     System.out.println("유저 결과값이 없습니다.");
                 }
