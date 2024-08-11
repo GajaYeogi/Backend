@@ -149,10 +149,11 @@ public class ReviewService {
 
         try{
             List<ReviewEntity> reviewOptional = reviewRepository.findByReviewtitleContaining(reviewDto.getReviewtitle());
-            ReviewDto reviewDtos = new ReviewDto();
 
             if (reviewDto.getReviewtitle() != null) {
                 for(ReviewEntity entity : reviewOptional) {
+                    ReviewDto reviewDtos = new ReviewDto();
+
                     reviewDtos.setReviewid(String.valueOf(entity.getReviewid()));
                     reviewDtos.setReviewuser(entity.getReviewuser());
                     reviewDtos.setReviewusername(entity.getReviewusername());
@@ -177,6 +178,8 @@ public class ReviewService {
 
                 if(userOptional.isPresent()) {
                     ReviewEntity entity = userOptional.get();
+                    ReviewDto reviewDtos = new ReviewDto();
+
                     reviewDtos.setReviewid(String.valueOf(entity.getReviewid()));
                     reviewDtos.setReviewuser(entity.getReviewuser());
                     reviewDtos.setReviewusername(entity.getReviewusername());

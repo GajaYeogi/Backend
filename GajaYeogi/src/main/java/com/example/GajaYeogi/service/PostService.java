@@ -147,10 +147,10 @@ public class PostService {
 
         try{
             List<PostEntity> postOptional = postRepository.findByPosttitleContaining(postDto.getPosttitle());
-            PostDto postDtos = new PostDto();
-
             if (postDto.getPosttitle() != null) {
                 for(PostEntity entity : postOptional) {
+                    PostDto postDtos = new PostDto();
+
                     postDtos.setPostid(String.valueOf(entity.getPostid()));
                     postDtos.setPostuser(entity.getPostuser());
                     postDtos.setPostusername(entity.getPostusername());
@@ -174,6 +174,7 @@ public class PostService {
 
                 if(userOptional.isPresent()) {
                     PostEntity entity = userOptional.get();
+                    PostDto postDtos = new PostDto();
 
                     postDtos.setPostid(String.valueOf(entity.getPostid()));
                     postDtos.setPostuser(entity.getPostuser());
