@@ -14,5 +14,5 @@ import java.util.Optional;
 public interface PostRepository extends JpaRepository<PostEntity, Long> {
     @Query("SELECT p FROM PostEntity p WHERE p.posttitle LIKE %:posttitle%")
     List<PostEntity> findByPosttitleContaining(@Param("posttitle") String posttitle);
-    Optional<PostEntity> findByPostuser(String postuser);
+    Optional<PostEntity> findByPostusername(String postusername);
 }

@@ -170,7 +170,7 @@ public class PostService {
                     postlist.add(postDtos);
                 }
             } else if (postDto.getPostuser() != null) {
-                Optional<PostEntity> userOptional = postRepository.findByPostuser(postDto.getPostuser());
+                Optional<PostEntity> userOptional = postRepository.findByPostusername(postDto.getPostusername());
 
                 if(userOptional.isPresent()) {
                     PostEntity entity = userOptional.get();

@@ -173,7 +173,7 @@ public class ReviewService {
                 }
             }
             else if (reviewDto.getReviewuser() != null) {
-                Optional<ReviewEntity> userOptional = reviewRepository.findByReviewuser(reviewDto.getReviewuser());
+                Optional<ReviewEntity> userOptional = reviewRepository.findByReviewusername(reviewDto.getReviewusername());
 
                 if(userOptional.isPresent()) {
                     ReviewEntity entity = userOptional.get();
