@@ -27,9 +27,6 @@ public class ReviewEntity {
     @Column(name = "reviewtime")                      // 게시글 작성 시간
     private String reviewtime;
 
-    @Column(name = "visitcount")                      //방문자 수
-    private Long visitcount;
-
     @OneToMany(mappedBy = "reviewentity", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ReviewImgEntity> reviewimage;
 }

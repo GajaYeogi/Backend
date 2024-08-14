@@ -58,38 +58,6 @@ public class ReviewController {
         }
     }
 
-    @GetMapping("/visitcount")
-    public ResponseEntity<String> visitcount(@RequestParam(value = "reviewid", required = false) String reviewid,
-                                            @RequestParam(value = "reviewuser", required = false) String reviewuser){
-        try{
-            ReviewDto reviewDto = new ReviewDto();
-            reviewDto.setReviewid(reviewid);
-            reviewDto.setReviewuser(reviewuser);
-
-            String reviewresponse = reviewService.visitcount(reviewDto);
-            return ResponseEntity.ok(reviewresponse);
-        }catch(Exception e){
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
-    }
-
-    @GetMapping("/visituncount")
-    public ResponseEntity<String> visituncount(@RequestParam(value = "reviewid") String reviewid,
-                                            @RequestParam(value = "reviewuser") String reviewuser){
-        try{
-            ReviewDto reviewDto = new ReviewDto();
-            reviewDto.setReviewid(reviewid);
-            reviewDto.setReviewuser(reviewuser);
-
-            String reviewresponse = reviewService.visituncount(reviewDto);
-            return ResponseEntity.ok(reviewresponse);
-        }catch(Exception e){
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
-    }
-
     //게시글 수정 reviewid, reviewimg, reviewoldimg, reviewcontent
     @PutMapping("/reviewupdate")
     public ResponseEntity<String> reviewupdate(@ModelAttribute ReviewDto reviewDto){
