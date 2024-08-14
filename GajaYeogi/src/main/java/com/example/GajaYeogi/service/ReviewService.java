@@ -116,8 +116,8 @@ public class ReviewService {
         ReviewDto reviewlist = new ReviewDto();
 
         try {
-            long reviewid = Long.parseLong(reviewDto.getReviewid());
-            Optional<ReviewEntity> reviewOptional = reviewRepository.findById(reviewid);
+            String reviewid = reviewDto.getOriginalpostid();
+            Optional<ReviewEntity> reviewOptional = reviewRepository.findByOriginalpostid(reviewid);
 
             if (reviewOptional.isPresent()) {
                 ReviewEntity entity = reviewOptional.get();

@@ -18,7 +18,7 @@ public class ReviewController {
         this.reviewService = reviewService;
     }
 
-    //글 작성  reviewuser, originalposotid, reviewusername, reviewtitle, reviewcontent, reviewimg, reviewlocation, xpoint, ypoint
+    //글 작성  reviewuser, originalpostid, reviewusername, reviewtitle, reviewcontent, reviewimg, reviewlocation, xpoint, ypoint
     @PostMapping("/reviewwirte")
     public ResponseEntity<String> writereview(@ModelAttribute ReviewDto reviewDto){
         try{
@@ -44,10 +44,10 @@ public class ReviewController {
 
     //특정 글 조회
     @PostMapping("/reviewread")
-    public ResponseEntity<ReviewDto> reviewread(@RequestParam(value = "reviewid") String reviewid){
+    public ResponseEntity<ReviewDto> reviewread(@RequestParam(value = "originalpostid") String originalpostid){
         try{
             ReviewDto reviewDto = new ReviewDto();
-            reviewDto.setReviewid(reviewid);
+            reviewDto.setOriginalpostid(originalpostid);
 
             ReviewDto reviewlist = reviewService.getReview(reviewDto);
             return ResponseEntity.ok(reviewlist);

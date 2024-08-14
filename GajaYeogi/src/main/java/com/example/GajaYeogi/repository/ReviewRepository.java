@@ -15,4 +15,5 @@ public interface ReviewRepository extends JpaRepository<ReviewEntity, Long> {
     @Query("SELECT r FROM ReviewEntity r WHERE r.reviewtitle LIKE %:reviewtitle%")
     List<ReviewEntity> findByReviewtitleContaining(@Param("reviewtitle") String reviewtitle);
     List<ReviewEntity> findByReviewusername(String reviewusername);
+    Optional<ReviewEntity> findByOriginalpostid(String originalpostid);
 }
