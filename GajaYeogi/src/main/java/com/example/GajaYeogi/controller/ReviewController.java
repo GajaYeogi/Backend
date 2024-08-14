@@ -90,7 +90,7 @@ public class ReviewController {
         }
     }
 
-    //게시글 수정 reviewid, reviewimg, reviewoldimg, reviewtitle, reviewcontent, reviewlocation, xpoint, ypoint
+    //게시글 수정 reviewid, reviewimg, reviewoldimg, reviewcontent
     @PutMapping("/reviewupdate")
     public ResponseEntity<String> reviewupdate(@ModelAttribute ReviewDto reviewDto){
         try{
