@@ -125,7 +125,7 @@ public class ReviewService {
                     reviewimgurls.add(reviewimgurl);
                 }
                 reviewDtos.setReviewimgurl(reviewimgurls);
-                reviewlist.add(reviewDto);
+                reviewlist.add(reviewDtos);
             }
         }catch (Exception e){
             e.printStackTrace();
