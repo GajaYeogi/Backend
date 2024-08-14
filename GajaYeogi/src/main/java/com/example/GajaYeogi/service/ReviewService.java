@@ -41,11 +41,7 @@ public class ReviewService {
             reviewEntity.setOriginalpostid(reviewDto.getOriginalpostid());
             reviewEntity.setReviewuser(reviewDto.getReviewuser());
             reviewEntity.setReviewusername(reviewDto.getReviewusername());
-            reviewEntity.setReviewtitle(reviewDto.getReviewtitle());
             reviewEntity.setReviewcontent(reviewDto.getReviewcontent());
-            reviewEntity.setReviewlocation(reviewDto.getReviewlocation());
-            reviewEntity.setReviewxpoint(reviewDto.getReviewxpoint());
-            reviewEntity.setReviewypoint(reviewDto.getReviewypoint());
             reviewEntity.setVisitcount(0L);
 
             List<ReviewImgEntity> imageEntities = saveImages(reviewDto.getReviewimg(), reviewEntity);
@@ -90,11 +86,7 @@ public class ReviewService {
                 reviewDto.setOriginalpostid(entity.getOriginalpostid());
                 reviewDto.setReviewuser(entity.getReviewuser());
                 reviewDto.setReviewusername(entity.getReviewusername());
-                reviewDto.setReviewtitle(entity.getReviewtitle());
                 reviewDto.setReviewcontent(entity.getReviewcontent());
-                reviewDto.setReviewlocation(entity.getReviewlocation());
-                reviewDto.setReviewxpoint(entity.getReviewxpoint());
-                reviewDto.setReviewypoint(entity.getReviewypoint());
 
                 List<String> reviewimgurls = new ArrayList<>();
                 for(int i = 0; i < entity.getReviewimage().size(); i++){
@@ -112,32 +104,28 @@ public class ReviewService {
     }
 
     //특정 게시글 조회
-    public ReviewDto getReview(ReviewDto reviewDto){
-        ReviewDto reviewlist = new ReviewDto();
+    public List<ReviewDto> getReview(ReviewDto reviewDto){
+        List<ReviewDto> reviewlist = new ArrayList<>();
 
         try {
             String reviewid = reviewDto.getOriginalpostid();
-            Optional<ReviewEntity> reviewOptional = reviewRepository.findByOriginalpostid(reviewid);
+            List<ReviewEntity> reviewOptional = reviewRepository.findByOriginalpostid(reviewid);
 
-            if (reviewOptional.isPresent()) {
-                ReviewEntity entity = reviewOptional.get();
-
-                reviewlist.setReviewid(String.valueOf(entity.getReviewid()));
-                reviewlist.setOriginalpostid(entity.getOriginalpostid());
-                reviewlist.setReviewuser(entity.getReviewuser());
-                reviewlist.setReviewusername(entity.getReviewusername());
-                reviewlist.setReviewtitle(entity.getReviewtitle());
-                reviewlist.setReviewcontent(entity.getReviewcontent());
-                reviewlist.setReviewlocation(entity.getReviewlocation());
-                reviewlist.setReviewxpoint(entity.getReviewxpoint());
-                reviewlist.setReviewypoint(entity.getReviewypoint());
+            for(ReviewEntity entity : reviewOptional) {
+                ReviewDto reviewDtos = new ReviewDto();
+                reviewDtos.setReviewid(String.valueOf(entity.getReviewid()));
+                reviewDtos.setOriginalpostid(entity.getOriginalpostid());
+                reviewDtos.setReviewuser(entity.getReviewuser());
+                reviewDtos.setReviewusername(entity.getReviewusername());
+                reviewDtos.setReviewcontent(entity.getReviewcontent());
 
                 List<String> reviewimgurls = new ArrayList<>();
-                for(int i = 0; i < entity.getReviewimage().size(); i++){
+                for (int i = 0; i < entity.getReviewimage().size(); i++) {
                     String reviewimgurl = entity.getReviewimage().get(i).getReviewimgpath();
                     reviewimgurls.add(reviewimgurl);
                 }
-                reviewlist.setReviewimgurl(reviewimgurls);
+                reviewDtos.setReviewimgurl(reviewimgurls);
+                reviewlist.add(reviewDto);
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -145,70 +133,6 @@ public class ReviewService {
 
         return reviewlist;
     }
-
-    //리뷰 검색
-    public List<ReviewDto> SearchReview(ReviewDto reviewDto){
-        List<ReviewDto> reviewlist = new ArrayList<>();
-
-        try{
-            List<ReviewEntity> reviewOptional = reviewRepository.findByReviewtitleContaining(reviewDto.getReviewtitle());
-            List<ReviewEntity> userOptional = reviewRepository.findByReviewusername(reviewDto.getReviewusername());
-
-            if (reviewDto.getReviewtitle() != null) {
-                for(ReviewEntity entity : reviewOptional) {
-                    ReviewDto reviewDtos = new ReviewDto();
-
-                    reviewDtos.setReviewid(String.valueOf(entity.getReviewid()));
-                    reviewDtos.setOriginalpostid(entity.getOriginalpostid());
-                    reviewDtos.setReviewuser(entity.getReviewuser());
-                    reviewDtos.setReviewusername(entity.getReviewusername());
-                    reviewDtos.setReviewtitle(entity.getReviewtitle());
-                    reviewDtos.setReviewcontent(entity.getReviewcontent());
-                    reviewDtos.setReviewlocation(entity.getReviewlocation());
-                    reviewDtos.setReviewxpoint(entity.getReviewxpoint());
-                    reviewDtos.setReviewypoint(entity.getReviewypoint());
-
-                    List<String> reviewimgurls = new ArrayList<>();
-                    for (int i = 0; i < entity.getReviewimage().size(); i++) {
-                        String reviewimgurl = entity.getReviewimage().get(i).getReviewimgpath();
-                        reviewimgurls.add(reviewimgurl);
-                    }
-                    reviewDtos.setReviewimgurl(reviewimgurls);
-
-                    reviewlist.add(reviewDtos);
-                }
-            }
-            else if (reviewDto.getReviewusername() != null) {
-                for(ReviewEntity entity: userOptional) {
-                    ReviewDto userDtos = new ReviewDto();
-
-                    userDtos.setReviewid(String.valueOf(entity.getReviewid()));
-                    userDtos.setOriginalpostid(entity.getOriginalpostid());
-                    userDtos.setReviewuser(entity.getReviewuser());
-                    userDtos.setReviewusername(entity.getReviewusername());
-                    userDtos.setReviewtitle(entity.getReviewtitle());
-                    userDtos.setReviewcontent(entity.getReviewcontent());
-                    userDtos.setReviewlocation(entity.getReviewlocation());
-                    userDtos.setReviewxpoint(entity.getReviewxpoint());
-                    userDtos.setReviewypoint(entity.getReviewypoint());
-
-                    List<String> reviewimgurls = new ArrayList<>();
-                    for (int i = 0; i < entity.getReviewimage().size(); i++) {
-                        String reviewimgurl = entity.getReviewimage().get(i).getReviewimgpath();
-                        reviewimgurls.add(reviewimgurl);
-                    }
-                    userDtos.setReviewimgurl(reviewimgurls);
-
-                    reviewlist.add(userDtos);
-                }
-            }
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-
-        return reviewlist;
-    }
-
     //게시글 수정
     public String updateReview(ReviewDto reviewDto){
         try{
@@ -236,11 +160,7 @@ public class ReviewService {
                 List<ReviewImgEntity> newImageEntities = saveImages(newImages, reviewEntity);
                 reviewEntity.getReviewimage().addAll(newImageEntities);
 
-                reviewEntity.setReviewtitle(reviewDto.getReviewtitle());
                 reviewEntity.setReviewcontent(reviewDto.getReviewcontent());
-                reviewEntity.setReviewlocation(reviewDto.getReviewlocation());
-                reviewEntity.setReviewxpoint(reviewDto.getReviewxpoint());
-                reviewEntity.setReviewypoint(reviewDto.getReviewypoint());
 
                 reviewRepository.save(reviewEntity);
 

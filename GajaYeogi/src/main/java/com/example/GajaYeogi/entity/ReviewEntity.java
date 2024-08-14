@@ -15,9 +15,6 @@ public class ReviewEntity {
     @Column(name = "originalpostid")                          // 원글 ID
     private String originalpostid;
 
-    @Column(name = "reviewtitle")
-    private String reviewtitle;                       // 게시글 제목
-
     @Column(name = "reviewcontent")
     private String reviewcontent;                     // 게시글 본문
 
@@ -30,17 +27,8 @@ public class ReviewEntity {
     @Column(name = "reviewtime")                      // 게시글 작성 시간
     private String reviewtime;
 
-    @Column(name = "reviewlocation")
-    private String reviewlocation;                    // 게시글의 지역
-
     @Column(name = "visitcount")                      //방문자 수
     private Long visitcount;
-
-    @Column(name = "xpoint")
-    private String reviewxpoint;                      // x좌표
-
-    @Column(name = "ypoint")
-    private String reviewypoint;                      // y좌표
 
     @OneToMany(mappedBy = "reviewentity", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ReviewImgEntity> reviewimage;

@@ -45,31 +45,13 @@ public class ReviewController {
 
     //특정 글 조회
     @PostMapping("/reviewread")
-    public ResponseEntity<ReviewDto> reviewread(@RequestParam(value = "originalpostid") String originalpostid){
+    public ResponseEntity <List<ReviewDto>> reviewread(@RequestParam(value = "originalpostid") String originalpostid){
         try{
             ReviewDto reviewDto = new ReviewDto();
             reviewDto.setOriginalpostid(originalpostid);
 
-            ReviewDto reviewlist = reviewService.getReview(reviewDto);
+            List<ReviewDto> reviewlist = reviewService.getReview(reviewDto);
             return ResponseEntity.ok(reviewlist);
-        }catch(Exception e){
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
-    }
-
-    //게시글 검색 제목과 작성자중 하나만 사용하고 사용하지 않는건 비워두기.
-    @GetMapping("/reviewsearch")
-    public ResponseEntity<List<ReviewDto>> postsearch(@RequestParam(value = "reviewtitle") String reviewtitle,
-                                              @RequestParam(value = "reviewusername") String reviewusername){
-        try{
-            ReviewDto reviewDto = new ReviewDto();
-            reviewDto.setReviewtitle(reviewtitle);
-            reviewDto.setReviewuser(reviewusername);
-
-            List<ReviewDto> reviewlist = reviewService.SearchReview(reviewDto);
-            return ResponseEntity.ok(reviewlist);
-
         }catch(Exception e){
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
