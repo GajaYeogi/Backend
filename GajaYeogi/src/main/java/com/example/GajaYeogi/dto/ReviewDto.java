@@ -8,6 +8,7 @@ import java.util.List;
 @Data
 public class ReviewDto {
     private String reviewid;                            //게시글 id
+    private String originalpostid;                            //원글 id
     private String reviewtitle;                       //게시글 제목
     private String reviewcontent;                     //게시글 본문
     private String reviewuser;                        //게시글 작성자 이메일

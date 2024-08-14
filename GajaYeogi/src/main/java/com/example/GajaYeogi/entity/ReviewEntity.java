@@ -12,6 +12,9 @@ public class ReviewEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reviewid;                            // 게시글 ID
 
+    @Column(name = "originalpostid")                          // 원글 ID
+    private String originalpostid;
+
     @Column(name = "reviewtitle")
     private String reviewtitle;                       // 게시글 제목
 
@@ -20,9 +23,6 @@ public class ReviewEntity {
 
     @Column(name = "reviewuser")
     private String reviewuser;                        // 게시글 작성자 이메일
-
-    @Column(name = "reviewcategory")                  // 게시글 카테고리
-    private String reviewcategory;
 
     @Column(name = "reviewusername")
     private String reviewusername;                    // 게시글 작성자 닉네임
@@ -33,7 +33,7 @@ public class ReviewEntity {
     @Column(name = "reviewlocation")
     private String reviewlocation;                    // 게시글의 지역
 
-    @Column(name = "visitcount")                           //방문자 수
+    @Column(name = "visitcount")                      //방문자 수
     private Long visitcount;
 
     @Column(name = "xpoint")

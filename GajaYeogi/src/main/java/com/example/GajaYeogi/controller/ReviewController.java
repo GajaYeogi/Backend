@@ -18,7 +18,7 @@ public class ReviewController {
         this.reviewService = reviewService;
     }
 
-    //글 작성 reviewuser, reviewusername, reviewtitle, reviewcontent, reviewimg, reviewlocation, xpoint, ypoint
+    //글 작성  reviewuser, originalposotid, reviewusername, reviewtitle, reviewcontent, reviewimg, reviewlocation, xpoint, ypoint
     @PostMapping("/reviewwirte")
     public ResponseEntity<String> writereview(@ModelAttribute ReviewDto reviewDto){
         try{

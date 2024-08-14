@@ -38,6 +38,7 @@ public class ReviewService {
     public String Reviewwrite(ReviewDto reviewDto){
         try{
             ReviewEntity reviewEntity = new ReviewEntity();
+            reviewEntity.setOriginalpostid(reviewDto.getOriginalpostid());
             reviewEntity.setReviewuser(reviewDto.getReviewuser());
             reviewEntity.setReviewusername(reviewDto.getReviewusername());
             reviewEntity.setReviewtitle(reviewDto.getReviewtitle());
@@ -86,6 +87,7 @@ public class ReviewService {
             for(ReviewEntity entity : reviewEnitites){
                 ReviewDto reviewDto = new ReviewDto();
                 reviewDto.setReviewid(String.valueOf(entity.getReviewid()));
+                reviewDto.setOriginalpostid(entity.getOriginalpostid());
                 reviewDto.setReviewuser(entity.getReviewuser());
                 reviewDto.setReviewusername(entity.getReviewusername());
                 reviewDto.setReviewtitle(entity.getReviewtitle());
@@ -121,6 +123,7 @@ public class ReviewService {
                 ReviewEntity entity = reviewOptional.get();
 
                 reviewlist.setReviewid(String.valueOf(entity.getReviewid()));
+                reviewlist.setOriginalpostid(entity.getOriginalpostid());
                 reviewlist.setReviewuser(entity.getReviewuser());
                 reviewlist.setReviewusername(entity.getReviewusername());
                 reviewlist.setReviewtitle(entity.getReviewtitle());
@@ -156,6 +159,7 @@ public class ReviewService {
                     ReviewDto reviewDtos = new ReviewDto();
 
                     reviewDtos.setReviewid(String.valueOf(entity.getReviewid()));
+                    reviewDtos.setOriginalpostid(entity.getOriginalpostid());
                     reviewDtos.setReviewuser(entity.getReviewuser());
                     reviewDtos.setReviewusername(entity.getReviewusername());
                     reviewDtos.setReviewtitle(entity.getReviewtitle());
@@ -179,6 +183,7 @@ public class ReviewService {
                     ReviewDto userDtos = new ReviewDto();
 
                     userDtos.setReviewid(String.valueOf(entity.getReviewid()));
+                    userDtos.setOriginalpostid(entity.getOriginalpostid());
                     userDtos.setReviewuser(entity.getReviewuser());
                     userDtos.setReviewusername(entity.getReviewusername());
                     userDtos.setReviewtitle(entity.getReviewtitle());
