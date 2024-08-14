@@ -57,7 +57,7 @@ public class UserController {
 
             String userresponse = userservice.saveintroduction(userDto);
 
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(userresponse);
+            return ResponseEntity.ok(userresponse);
         }catch (Exception e){
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
