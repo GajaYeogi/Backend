@@ -76,11 +76,6 @@ public class UserService {
                         .map(ReviewWriteidEntity::getReviewwriteid)
                         .collect(Collectors.toList());
                 userdtos.setReviewwriteids(reviewwriteids);
-
-                List<String> visitids = userEntity.getVisitid().stream()
-                        .map(VisitidEntity::getVisitid)
-                        .collect(Collectors.toList());
-                userdtos.setVisitids(visitids);
             }
         }catch(Exception e){
             e.printStackTrace();
